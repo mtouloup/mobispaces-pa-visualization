@@ -1,0 +1,8 @@
+Werkzeug==0.16.1
+markupsafe==2.0.1
+flask
+flask_restplus
+pandas
+geopandas
+matplotlib
+movingpandas
