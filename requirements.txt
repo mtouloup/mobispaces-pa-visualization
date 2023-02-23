@@ -6,3 +6,4 @@ pandas
 geopandas
 matplotlib
 movingpandas
+psycopg2
