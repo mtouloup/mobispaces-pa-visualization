@@ -28,7 +28,7 @@ api = Api(api_blueprint, version="0.1",
           title='MobiSpaces Privacy Aware Visualization',
           description="")
 
-@api.route('/autentication/test')
+@api.route('/authentication/test')
 class home2(Resource):
     @oidc.require_login
     def get(self):
