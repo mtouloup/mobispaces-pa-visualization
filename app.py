@@ -10,7 +10,7 @@ app.config.update({
     'SECRET_KEY': 'EpsqJxbG4wg6M4OP4zzh67SEDIlZ3qrm',
     'TESTING': True,
     'DEBUG': True,
-    'OIDC_CLIENT_SECRETS': 'auth.json',
+    'OIDC_CLIENT_SECRETS': '/usr/src/app/app/auth.json',
     'OIDC_ID_TOKEN_COOKIE_SECURE': True,
     'OIDC_REQUIRE_VERIFIED_EMAIL': False,
     'OIDC_USER_INFO_ENABLED': True,
