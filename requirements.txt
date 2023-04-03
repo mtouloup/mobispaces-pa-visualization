@@ -5,3 +5,4 @@ folium
 pandas
 flask_cors
 flask_oidc
+flask_restx
