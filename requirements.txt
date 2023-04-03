@@ -1,13 +1,7 @@
 Werkzeug==0.16.1
 markupsafe==2.0.1
 flask
-flask_restplus
+folium
 pandas
-geopandas
-matplotlib
-movingpandas
-psycopg2
-keycloak
 flask_cors
 flask_oidc
-flask_restful

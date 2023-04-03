@@ -1,10 +1,6 @@
 import pandas as pd
-from geopandas import gpd
-import movingpandas as mpd
-import matplotlib.pyplot as plt
 import folium
 from folium.plugins import MarkerCluster
-from functools import lru_cache
 
 def calculate_center(df):
     """
@@ -24,7 +20,6 @@ def calculate_center(df):
     # Return a tuple containing the mean latitude and longitude
     return mean_lat, mean_lon
 
-@lru_cache(maxsize=None)
 def create_map_with_markers(dataset_url, zoom_start, marker_limit):
 
     df = pd.read_csv(dataset_url, nrows=int(marker_limit))
@@ -47,7 +42,6 @@ def create_map_with_markers(dataset_url, zoom_start, marker_limit):
     return html_string
 
 
-@lru_cache(maxsize=None)
 def create_map_with_trip(dataset_url, zoom_start, marker_limit):
 
     df = pd.read_csv(dataset_url, nrows=int(marker_limit))

@@ -1,9 +1,7 @@
-from flask import Flask, Blueprint, render_template
+from flask import Flask, Blueprint
 from flask_cors import CORS
 from flask_oidc import OpenIDConnect
 from flask_restx import Api, Resource
-import re
-from flask_restful import abort
 
 import static.load_trajectories as lt
 import database.db_methods as db_methods
