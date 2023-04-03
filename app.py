@@ -4,7 +4,6 @@ from flask_oidc import OpenIDConnect
 from flask_restx import Api, Resource
 
 import static.load_trajectories as lt
-import database.db_methods as db_methods
 
 app = Flask(__name__)
 app.config.update({
