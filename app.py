@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, jsonify
 from flask_cors import CORS
 from flask_oidc import OpenIDConnect
 from flask_restx import Api, Resource
@@ -29,25 +29,32 @@ api = Api(api_blueprint, version="0.1",
           description="")
 
 @api.route('/authentication/test')
-class home2(Resource):
+class test_auth(Resource):
     @oidc.require_login
     def get(self):
         return 'Authentication from Ubitech Works!'
     
-@api.route('/UC4/trip_map/<zoom>/<markers>')
+@api.route('/UC3/trip_map/<zoom>/<markers>')
 class map_trip(Resource):
-    @oidc.require_login
+    #@oidc.require_login
     def get(self, zoom, markers):
         html_map = lt.create_map_with_trip(dataset_url="https://dl.dropboxusercontent.com/s/8iqq3seeav02c0f/ais.csv", zoom_start=zoom, marker_limit=markers)
         return html_map
     
-@api.route('/UC4/map/<zoom>/<markers>')
+@api.route('/UC3/map/<zoom>/<markers>')
 class marker_map(Resource):
-    @oidc.require_login
+    #@oidc.require_login
     def get(self, zoom, markers):
         html_map = lt.create_map_with_markers(dataset_url="https://dl.dropboxusercontent.com/s/8iqq3seeav02c0f/ais.csv", zoom_start=zoom, marker_limit=markers)
         return html_map
-    
+
+@api.route('/UC3/data/<number_of_rows>')
+class get_Data(Resource):
+    #@oidc.require_login
+    def get(self, number_of_rows):
+        data = lt.read_csv_nrows(dataset_url="https://dl.dropboxusercontent.com/s/8iqq3seeav02c0f/ais.csv", n=number_of_rows)
+        response = data.to_json(orient='records')
+        return jsonify(response)
 """
 
 @api.route('/UC4')

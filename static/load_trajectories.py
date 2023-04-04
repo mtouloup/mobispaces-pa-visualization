@@ -2,23 +2,20 @@ import pandas as pd
 import folium
 from folium.plugins import MarkerCluster
 
-def calculate_center(df):
+def read_csv_nrows(dataset_url, n):
     """
-    Calculate the center of the map based on the mean latitude and mean longitude
-    in the given dataframe.
+    Reads the first n rows of a CSV file using Pandas.
 
     Args:
-        df (pandas.DataFrame): A dataframe with columns 'lat' and 'lon'
+        file_path (str): The path to the CSV file.
+        n (int): The number of rows to read.
 
     Returns:
-        (float, float): A tuple containing the mean latitude and mean longitude
+        A pandas DataFrame containing the first n rows of the CSV file.
     """
-    # Calculate the mean latitude and longitude values
-    mean_lat = df['lat'].mean()
-    mean_lon = df['lon'].mean()
+    df = pd.read_csv(dataset_url, nrows=int(n))
+    return df
 
-    # Return a tuple containing the mean latitude and longitude
-    return mean_lat, mean_lon
 
 def create_map_with_markers(dataset_url, zoom_start, marker_limit):
 
