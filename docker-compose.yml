@@ -8,18 +8,18 @@ services:
     volumes:
       - ".:/usr/src/app/app"
     restart: unless-stopped
-  database:
-    image: postgres:latest
-    volumes: 
-      - db-data:/var/lib/postgresql/data
-    container_name: postgres_db
-    environment:
-      - POSTGRES_DB=pa-visualization
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - 5432:5432
-    restart: unless-stopped
+#   database:
+#     image: postgres:latest
+#     volumes: 
+#       - db-data:/var/lib/postgresql/data
+#     container_name: postgres_db
+#     environment:
+#       - POSTGRES_DB=pa-visualization
+#       - POSTGRES_USER=postgres
+#       - POSTGRES_PASSWORD=postgres
+#     ports:
+#       - 5432:5432
+#     restart: unless-stopped
   dozzle:
     container_name: dozzle
     image: amir20/dozzle:latest
