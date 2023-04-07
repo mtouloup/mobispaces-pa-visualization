@@ -1,19 +1,17 @@
-from flask import Flask, Blueprint, jsonify
+import os
+from flask import Flask, Blueprint
 from flask_cors import CORS
 from flask_oidc import OpenIDConnect
-from flask_restx import Api, Resource
-import base64
-import requests
-
-import static.load_trajectories as lt
+from flask_restx import Api
+from apis.uc2 import init_uc2
+from apis.uc3 import init_uc3
 
 app = Flask(__name__)
 app.config.update({
     'SECRET_KEY': 'EpsqJxbG4wg6M4OP4zzh67SEDIlZ3qrm',
     'TESTING': True,
     'DEBUG': True,
-    #'OIDC_CLIENT_SECRETS': 'auth.json',
-    'OIDC_CLIENT_SECRETS': '/usr/src/app/app/auth.json',
+    'OIDC_CLIENT_SECRETS': os.path.join(os.path.dirname(__file__), 'auth.json'),
     'OIDC_ID_TOKEN_COOKIE_SECURE': True,
     'OIDC_REQUIRE_VERIFIED_EMAIL': False,
     'OIDC_USER_INFO_ENABLED': True,
@@ -32,98 +30,6 @@ api = Api(api_blueprint, version="0.1",
           title='MobiSpaces Privacy Aware Visualization',
           description="")
 
-@api.route('/authentication/test')
-class test_auth(Resource):
-    @oidc.require_login
-    def get(self):
-        return 'Authentication from Ubitech Works!'
-    
-@api.route('/UC3/trip_map/<zoom>/<markers>')
-class map_trip(Resource):
-    @oidc.require_login
-    def get(self, zoom, markers):
-        html_map = lt.create_map_with_trip(dataset_url="https://dl.dropboxusercontent.com/s/8iqq3seeav02c0f/ais.csv", zoom_start=zoom, marker_limit=markers)
-        return html_map
-    
-@api.route('/UC3/map/<zoom>/<markers>')
-class marker_map(Resource):
-    @oidc.require_login
-    def get(self, zoom, markers):
-        html_map = lt.create_map_with_markers(dataset_url="https://dl.dropboxusercontent.com/s/8iqq3seeav02c0f/ais.csv", zoom_start=zoom, marker_limit=markers)
-        return html_map
-
-@api.route('/UC3/data/<number_of_rows>')
-class get_Data(Resource):
-    @oidc.require_login
-    def get(self, number_of_rows):
-        data = lt.read_csv_nrows(dataset_url="https://dl.dropboxusercontent.com/s/8iqq3seeav02c0f/ais.csv", n=number_of_rows)
-        response = data.to_json(orient='records')
-        return jsonify(response)
-
-@api.route('/UC2/sensor_data/<senson_id>')
-class get_uc2_sensonr_data(Resource):
-    @oidc.require_login
-    def get(self, senson_id):
-        url = "https://bosch-iot-insights.com/r/pyf4020/currentaqi/"+senson_id
-        username = "pyf4020-mobispaces-api"
-        password = "Um-6VztCxpgjowyQ"
-
-        # Encode username and password as base64
-        auth = base64.b64encode((username + ":" + password).encode()).decode()
-
-        headers = {
-            "Authorization": "Basic " + auth,
-            "Content-Type": "application/json"
-        }
-
-        response = requests.get(url, headers=headers)
-
-        # Check if the response was successful and return JSON response
-        if response.ok:
-            json_data = response.json()
-            return jsonify(json_data)
-        else:
-            response.raise_for_status()
-            return jsonify(response)
-          
-"""
-
-@api.route('/UC4')
-class movpandasex1(Resource):
-    @oidc.require_login
-    def get(self):
-        html_map = lt.create_map_with_markers('figures/')
-        return html_map
-
-@api.route('/register/<email>/<password>')
-class register(Resource):
-    @oidc.require_login
-    def post(self, email=None, password=None):
-        db_methods.register_user(email=email, password=password)
-        response = {'status': 'success'}
-        return Response(
-            json.dumps(response),
-            mimetype='application/json',
-            status=200
-            )
-
-
-@api.route('/login/<email>/<password>')
-class login(Resource):
-    @oidc.require_login
-    def get(self, email=None, password=None):
-        
-        if (db_methods.get_user(email=email, password=password) == 1):
-            response = {'status': 'success'}
-        else:
-            response = {'status': 'fail'}
-            
-        return Response(
-            json.dumps(response),
-            mimetype='application/json',
-            status=200
-        )
-"""
 # Register the blueprints with your app
 app.register_blueprint(api_blueprint)
 
@@ -133,8 +39,14 @@ api_doc = Api(api_doc_blueprint, doc='/docs')
 api_doc.add_namespace(api)
 app.register_blueprint(api_doc_blueprint, url_prefix='/doc')
 
-# main driver function
-if __name__ == '__main__': 
-    # run() method of Flask class runs the application
+# Initialize and register the UC2 and UC3 namespaces
+uc2_ns = init_uc2(oidc)
+uc3_ns = init_uc3(oidc)
+api.add_namespace(uc2_ns)
+api.add_namespace(uc3_ns)
+
+# Main driver function
+if __name__ == '__main__':
+    # Run() method of Flask class runs the application
     # on the local development server.
     app.run(host='0.0.0.0', debug=True, port=80)
