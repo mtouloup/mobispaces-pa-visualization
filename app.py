@@ -2,6 +2,8 @@ from flask import Flask, Blueprint, jsonify
 from flask_cors import CORS
 from flask_oidc import OpenIDConnect
 from flask_restx import Api, Resource
+import base64
+import requests
 
 import static.load_trajectories as lt
 
@@ -10,6 +12,7 @@ app.config.update({
     'SECRET_KEY': 'EpsqJxbG4wg6M4OP4zzh67SEDIlZ3qrm',
     'TESTING': True,
     'DEBUG': True,
+    #'OIDC_CLIENT_SECRETS': 'auth.json',
     'OIDC_CLIENT_SECRETS': '/usr/src/app/app/auth.json',
     'OIDC_ID_TOKEN_COOKIE_SECURE': True,
     'OIDC_REQUIRE_VERIFIED_EMAIL': False,
@@ -56,7 +59,33 @@ class get_Data(Resource):
         data = lt.read_csv_nrows(dataset_url="https://dl.dropboxusercontent.com/s/8iqq3seeav02c0f/ais.csv", n=number_of_rows)
         response = data.to_json(orient='records')
         return jsonify(response)
-       
+
+@api.route('/UC2/sensor_data/<senson_id>')
+class get_uc2_sensonr_data(Resource):
+    @oidc.require_login
+    def get(self, senson_id):
+        url = "https://bosch-iot-insights.com/r/pyf4020/currentaqi/"+senson_id
+        username = "pyf4020-mobispaces-api"
+        password = "Um-6VztCxpgjowyQ"
+
+        # Encode username and password as base64
+        auth = base64.b64encode((username + ":" + password).encode()).decode()
+
+        headers = {
+            "Authorization": "Basic " + auth,
+            "Content-Type": "application/json"
+        }
+
+        response = requests.get(url, headers=headers)
+
+        # Check if the response was successful and return JSON response
+        if response.ok:
+            json_data = response.json()
+            return jsonify(json_data)
+        else:
+            response.raise_for_status()
+            return jsonify(response)
+          
 """
 
 @api.route('/UC4')
