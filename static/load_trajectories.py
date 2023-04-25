@@ -16,6 +16,20 @@ def read_csv_nrows(dataset_url, n):
     df = pd.read_csv(dataset_url, nrows=int(n))
     return df
 
+def read_dataset(dataset_url):
+    """
+    Reads the first n rows of a CSV file using Pandas.
+
+    Args:
+        file_path (str): The path to the CSV file.
+        n (int): The number of rows to read.
+
+    Returns:
+        A pandas DataFrame containing the first n rows of the CSV file.
+    """
+    df = pd.read_csv(dataset_url)
+    return df
+
 
 def create_map_with_markers(dataset_url, zoom_start, marker_limit):
 
@@ -64,3 +78,55 @@ def create_map_with_trip(dataset_url, zoom_start, marker_limit):
     # m.save('map2.html')
 
     return html_string
+
+def get_aggregated_data(dataset_url):
+    # Load the dataset
+    df = pd.read_csv(dataset_url)
+    
+    # Convert the BaseDateTime column to a datetime object
+    df['t'] = pd.to_datetime(df['t'])
+    
+    # Group the data by vessel ID and get the latest timestamp for each vessel
+    latest_df = df.groupby('shipid')['t'].max().reset_index()
+    
+    # Merge the latest timestamp with the original dataframe to get the latest data for each vessel
+    latest_data = pd.merge(latest_df, df, on=['shipid', 't'])
+    
+    # Convert the BaseDateTime values to strings
+    latest_data['t'] = latest_data['t'].dt.strftime('%Y-%m-%d %H:%M:%S')
+
+    # Select the columns to include in the output
+    output_columns = ['t','shipid','lon','lat','heading','course','speed','status','shiptype','draught','destination']
+    
+    # Select the latest data for each vessel and return as a list of dictionaries
+    latest_agg_data = latest_data[output_columns].to_dict('records')
+    
+    # Return the latest aggregated data
+    return latest_agg_data
+
+def get_aggregated_trajectory_data(dataset_url):
+    # Load the dataset
+    df = pd.read_csv(dataset_url)
+    
+    # Group the data by shipid and calculate the average speed, course, and draft for each vessel
+    agg_df = df.groupby('shipid').agg({'speed': 'mean', 'course': 'mean', 'draught': 'mean'})
+    
+    # Convert the average course values to degrees (0-360)
+    agg_df['course'] = agg_df['course'].apply(lambda x: x % 360)
+    
+    # Convert the average speed and draft values to two decimal places
+    agg_df['speed'] = agg_df['speed'].round(2)
+    agg_df['draught'] = agg_df['draught'].round(2)
+    
+    # Convert the aggregated data to a list of dictionaries
+    agg_data = []
+    for index, row in agg_df.iterrows():
+        agg_data.append({
+            'shipid': index,
+            'avg_speed': row['speed'],
+            'avg_course': row['course'],
+            'avg_draft': row['draught']
+        })
+        
+    # Return the aggregated data
+    return agg_data

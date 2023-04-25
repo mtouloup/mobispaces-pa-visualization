@@ -10,7 +10,7 @@ def init_uc2(oidc: OpenIDConnect):
 
     @uc2_ns.route('/sensor_data/<sensor_id>')
     class get_uc2_sensor_data(Resource):
-        @oidc.require_login
+#        @oidc.require_login
         def get(self, sensor_id):
             url = "https://bosch-iot-insights.com/r/pyf4020/currentaqi/" + sensor_id
             username = "pyf4020-mobispaces-api"
