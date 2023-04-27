@@ -139,14 +139,13 @@ def create_map_with_markers_and_popups(aggr_data, traj_aggr_data):
     df = pd.DataFrame(aggr_data).dropna(subset=['lon', 'lat'])
     df_traj = pd.DataFrame(traj_aggr_data)
     # Create a map object
-    m = folium.Map(location=[df['lat'].mean(), df['lon'].mean()], zoom_start=10)
+    m = folium.Map(location=[df['lat'].mean(), df['lon'].mean()], zoom_start=10, scrollWheelZoom=False)
     # Create a marker cluster object
     marker_cluster = MarkerCluster().add_to(m)
     # Add markers to the marker cluster
     for index, row in df_traj.iterrows():
         for index2, row2 in df.iterrows():
             if row2['shipid'] == row['shipid']:
-                #popup_text = "Ship ID: {}<br>Average speed: {}".format(row['shipid'], row['avg_speed'])
                 popup_text = '<table>'
                 popup_text += '<tr><td><b>Ship ID:</b></td><td>{}</td></tr>'.format(row['shipid'])
                 popup_text += '<tr><td><b>Ship Type:</b></td><td>{}</td></tr>'.format(row2['shiptype'])
@@ -157,7 +156,7 @@ def create_map_with_markers_and_popups(aggr_data, traj_aggr_data):
                 popup_text += '<tr><td>Time:</td><td>{}</td></tr>'.format(row2['t'])
                 popup_text += '<tr><td>Latitude:</td><td>{:.4f} deg</td></tr>'.format(row2['lat'])
                 popup_text += '<tr><td>Longitude:</td><td>{:.4f} deg</td></tr>'.format(row2['lon'])
-                popup_text += '<tr><td colspan="2"><a href="" target="_blank" class="marker-link" id="'+row['shipid']+'">View details</a></td></tr>'
+                popup_text += '<tr><td colspan="2"><a href="../../pages/dashboard/usecase3_vessel_history.html?data-shipid='+row['shipid']+'" target="_blank">View details</a></td></tr>'
                 popup_text += '</table>'
                 folium.Marker(location=[row2['lat'], row2['lon']], popup=popup_text).add_to(marker_cluster)
 
