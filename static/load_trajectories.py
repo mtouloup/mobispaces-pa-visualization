@@ -1,6 +1,7 @@
+import numpy as np
 import pandas as pd
 import folium
-from folium.plugins import MarkerCluster
+from folium.plugins import MarkerCluster, PolyLineTextPath, AntPath
 from io import StringIO
 
 def read_csv_nrows(dataset_url, n):
@@ -164,4 +165,44 @@ def create_map_with_markers_and_popups(aggr_data, traj_aggr_data):
     # Save the map to an HTML file
     #m.save('map.html')
 
+    return html_string
+
+###### Create Trajectory for a specific vessel ########
+#######################################################
+
+def create_vessel_trajectory(dataset_url, shipid):
+    df = pd.read_csv(dataset_url)
+    df = df[df['shipid'] == str(shipid)]
+    df = df.dropna(subset=['lon', 'lat'])
+
+    if df.empty:
+        return "No data available for this ship ID."
+
+    m = folium.Map(location=[df['lat'].mean(), df['lon'].mean()], zoom_start=7, scrollWheelZoom=False)
+    marker_cluster = MarkerCluster().add_to(m)
+
+    for index, row in df.iterrows():
+        popup_text = "Ship ID: {}<br>Timestamp: {}".format(row['shipid'], row['t'])
+        folium.Marker(location=[row['lat'], row['lon']], popup=popup_text).add_to(marker_cluster)
+
+    # Create a PolyLine object and add it to the map
+    trip_coords = df[['lat', 'lon']].values.tolist()
+    earliest_timestamp = df['t'].min()
+    latest_timestamp = df['t'].max()
+    antpath = AntPath(
+        locations=trip_coords,
+        dash_array=[10, 20],
+        delay=800,
+        weight=5,
+        color='#FF0000',
+        pulse_color='#FFFFFF',
+        reverse=False,
+        # Set the heading of the first arrow based on the direction from the first to the last point
+        heading=np.arctan2(trip_coords[-1][1]-trip_coords[0][1], trip_coords[-1][0]-trip_coords[0][0]) * 180/np.pi,
+        # Set the heading of the last arrow based on the direction from the second to the last point
+        heading_toward_end=np.arctan2(trip_coords[-1][1]-trip_coords[-2][1], trip_coords[-1][0]-trip_coords[-2][0]) * 180/np.pi
+    )
+    antpath.add_to(m)
+
+    html_string = m._repr_html_()
     return html_string

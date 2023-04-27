@@ -68,6 +68,18 @@ def init_uc3(oidc: OpenIDConnect):
             )
             return html_map
             
-            #return True
+            
+    # ### API for creating trajectory for a specific vessel ###
+    ###########################################################
+    @uc3_ns.route('/trajectory_map/<shipid>')
+    class map_trip(Resource):
+        #@oidc.require_login
+        def get(self, shipid):
+            html_map = lt.create_vessel_trajectory(
+                dataset_url="https://dl.dropboxusercontent.com/s/8iqq3seeav02c0f/ais.csv", 
+                shipid=shipid 
+            )
+            return html_map  
+        
 
     return uc3_ns
