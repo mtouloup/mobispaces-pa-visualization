@@ -5,9 +5,9 @@ import static.authenticate as auth
 from flask import jsonify
 
 def init_login():
-    login_ns = Namespace('Log In', description='Log In using UBI keyckloak server')
+    login_ns = Namespace('login', description='Log In related operations')
 
-    @login_ns.route('/login/<user_name>/<password>')
+    @login_ns.route('/<user_name>/<password>')
     class login(Resource):
         def get(self, user_name, password):
             url = 'https://mobispaces-keycloak.euprojects.net/auth/realms/Mobispaces/protocol/openid-connect/token'
