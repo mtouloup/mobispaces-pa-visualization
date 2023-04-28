@@ -1,6 +1,7 @@
 from flask_restx import Namespace, Resource
 import base64
 import requests
+import static.authenticate as auth
 from flask import jsonify
 
 def init_uc2():
@@ -8,6 +9,7 @@ def init_uc2():
 
     @uc2_ns.route('/sensor_data/<sensor_id>')
     class get_uc2_sensor_data(Resource):
+        @auth.require_token
         def get(self, sensor_id):
             url = "https://bosch-iot-insights.com/r/pyf4020/currentaqi/" + sensor_id
             username = "pyf4020-mobispaces-api"

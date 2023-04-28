@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask_restx import Api
 from apis.uc2 import init_uc2
 from apis.uc3 import init_uc3
+from apis.login import init_login
 
 app = Flask(__name__)
 CORS(app)
@@ -25,9 +26,11 @@ app.register_blueprint(api_doc_blueprint, url_prefix='/doc')
 
 # Initialize and register the UC2 and UC3 namespaces
 uc2_ns = init_uc2()
+login_ns = init_login()
 uc3_ns = init_uc3()
 api.add_namespace(uc2_ns)
 api.add_namespace(uc3_ns)
+api.add_namespace(login_ns)
 
 # Main driver function
 if __name__ == '__main__':
