@@ -1,16 +1,13 @@
-import os
 from flask_restx import Namespace, Resource
-from flask_oidc import OpenIDConnect
 import base64
 import requests
 from flask import jsonify
 
-def init_uc2(oidc: OpenIDConnect):
+def init_uc2():
     uc2_ns = Namespace('UC2', description='UC2 related operations')
 
     @uc2_ns.route('/sensor_data/<sensor_id>')
     class get_uc2_sensor_data(Resource):
-#        @oidc.require_login
         def get(self, sensor_id):
             url = "https://bosch-iot-insights.com/r/pyf4020/currentaqi/" + sensor_id
             username = "pyf4020-mobispaces-api"
