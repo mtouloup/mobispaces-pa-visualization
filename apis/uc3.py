@@ -93,4 +93,9 @@ def init_uc3():
                 shipid=shipid 
             )
             return html_map  
+    @uc3_ns.route('/hello')
+    class Hello(Resource):
+        @auth.require_token
+        def get(self):
+            return 'Hello!'
     return uc3_ns
