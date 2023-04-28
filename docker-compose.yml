@@ -6,7 +6,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ".:/usr/src/app/app"
+      - ".:/usr/src/app"
     restart: unless-stopped
 #   database:
 #     image: postgres:latest

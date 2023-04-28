@@ -15,4 +15,4 @@ RUN pip3 install --trusted-host pypi.python.org -r requirements.txt
 #Expose Port
 EXPOSE 80
 
-ENTRYPOINT ["python3", "/usr/src/app/app/app.py"]
+ENTRYPOINT ["python3", "/usr/src/app/app.py"]
