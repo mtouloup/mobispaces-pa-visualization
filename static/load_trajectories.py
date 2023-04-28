@@ -1,7 +1,8 @@
+import numpy as np
 import pandas as pd
 import folium
-from folium.plugins import MarkerCluster
-from io import StringIO
+from folium.plugins import MarkerCluster, AntPath
+from haversine import haversine
 
 def read_csv_nrows(dataset_url, n):
     """
@@ -80,6 +81,8 @@ def create_map_with_trip(dataset_url, zoom_start, marker_limit):
 
     return html_string
 
+
+
 def get_aggregated_data(dataset_url):
     # Load the dataset
     df = pd.read_csv(dataset_url)
@@ -106,7 +109,52 @@ def get_aggregated_data(dataset_url):
     # Return the latest aggregated data
     return latest_agg_data
 
-def get_aggregated_trajectory_data(dataset_url):
+
+def get_aggregated_vessel_data(dataset_url, shipid):
+    # Load the dataset
+    df = pd.read_csv(dataset_url)
+    df = df.dropna(subset=['lon', 'lat'])
+
+    # Convert the BaseDateTime column to a datetime object and then to a string
+    df['t'] = pd.to_datetime(df['t']).astype(str)
+    # Filter the data for the given shipid
+    vessel_data = df[df['shipid'] == shipid]
+    # Check if the vessel is moving on the latest data
+    moving = False
+    latest_data = vessel_data.iloc[-1]
+    if latest_data['speed'] > 0:
+        moving = True
+    # Calculate average, min, and max speed
+    avg_speed = vessel_data['speed'].mean()
+    min_speed = vessel_data['speed'].min()
+    max_speed = vessel_data['speed'].max()
+    # Calculate average, min, and max draught
+    avg_draught = vessel_data['draught'].mean()
+    min_draught = vessel_data['draught'].min()
+    max_draught = vessel_data['draught'].max()
+    # Calculate travelled distance based on starting and ending coordinates. The result is returned in kilometers.
+    start_lat = vessel_data.iloc[0]['lat']
+    start_lon = vessel_data.iloc[0]['lon']
+    end_lat = latest_data['lat']
+    end_lon = latest_data['lon']
+    distance = haversine((start_lat, start_lon), (end_lat, end_lon))
+    # Select the columns to include in the output
+    output_columns = ['t','shipid','lon','lat','heading','course','speed','status','shiptype','draught','destination']
+    # Select the latest data for the vessel and return as a list of dictionaries
+    latest_data = vessel_data.sort_values('t').tail(1)
+    latest_data['moving'] = moving
+    latest_data['avg_speed'] = avg_speed
+    latest_data['min_speed'] = min_speed
+    latest_data['max_speed'] = max_speed
+    latest_data['avg_draught'] = avg_draught
+    latest_data['min_draught'] = min_draught
+    latest_data['max_draught'] = max_draught
+    latest_data['distance'] = distance
+
+    return latest_data[output_columns + ['moving', 'avg_speed', 'min_speed', 'max_speed', 'avg_draught', 'min_draught', 'max_draught', 'distance']].to_dict('records')
+
+
+def get_aggregated_statistic_data(dataset_url):
     # Load the dataset
     df = pd.read_csv(dataset_url)
     #df = df.dropna(subset=['lon', 'lat'])
@@ -164,4 +212,45 @@ def create_map_with_markers_and_popups(aggr_data, traj_aggr_data):
     # Save the map to an HTML file
     #m.save('map.html')
 
+    return html_string
+
+
+###### Create Trajectory for a specific vessel ########
+#######################################################
+
+def create_vessel_trajectory(dataset_url, shipid):
+    df = pd.read_csv(dataset_url)
+    df = df[df['shipid'] == str(shipid)]
+    df = df.dropna(subset=['lon', 'lat'])
+
+    if df.empty:
+        return "No data available for this ship ID."
+
+    m = folium.Map(location=[df['lat'].mean(), df['lon'].mean()], zoom_start=7, scrollWheelZoom=False)
+    marker_cluster = MarkerCluster().add_to(m)
+
+    for index, row in df.iterrows():
+        popup_text = "Ship ID: {}<br>Timestamp: {}".format(row['shipid'], row['t'])
+        folium.Marker(location=[row['lat'], row['lon']], popup=popup_text).add_to(marker_cluster)
+
+    # Create a PolyLine object and add it to the map
+    trip_coords = df[['lat', 'lon']].values.tolist()
+    earliest_timestamp = df['t'].min()
+    latest_timestamp = df['t'].max()
+    antpath = AntPath(
+        locations=trip_coords,
+        dash_array=[10, 20],
+        delay=800,
+        weight=5,
+        color='#FF0000',
+        pulse_color='#FFFFFF',
+        reverse=False,
+        # Set the heading of the first arrow based on the direction from the first to the last point
+        heading=np.arctan2(trip_coords[-1][1]-trip_coords[0][1], trip_coords[-1][0]-trip_coords[0][0]) * 180/np.pi,
+        # Set the heading of the last arrow based on the direction from the second to the last point
+        heading_toward_end=np.arctan2(trip_coords[-1][1]-trip_coords[-2][1], trip_coords[-1][0]-trip_coords[-2][0]) * 180/np.pi
+    )
+    antpath.add_to(m)
+
+    html_string = m._repr_html_()
     return html_string
