@@ -13,7 +13,7 @@ def init_uc3():
 
     @uc3_ns.route('/trip_map/<zoom>/<markers>')
     class map_trip(Resource):
-        #@auth.require_token
+        @auth.require_token
         def get(self, zoom, markers):
             html_map = lt.create_map_with_trip(
                 dataset_url=dataset_path, 
@@ -24,7 +24,7 @@ def init_uc3():
 
     @uc3_ns.route('/map/<zoom>/<markers>')
     class marker_map(Resource):
-        #@auth.require_token
+        @auth.require_token
         def get(self, zoom, markers):
             html_map = lt.create_map_with_markers(
                 dataset_url=dataset_path, 
@@ -35,7 +35,7 @@ def init_uc3():
 
     @uc3_ns.route('/data/<number_of_rows>')
     class get_Data(Resource):
-        #@auth.require_token
+        @auth.require_token
         def get(self, number_of_rows):
             data = lt.read_csv_nrows(
                 dataset_url=dataset_path, 
@@ -49,7 +49,7 @@ def init_uc3():
     ###########################################################
     @uc3_ns.route('/data/aggregated')
     class get_aggr_data(Resource):
-        #@auth.require_token
+        @auth.require_token
         def get(self):
             return lt.get_aggregated_data(dataset_url=dataset_path)
         
@@ -57,7 +57,7 @@ def init_uc3():
     ##############################################################################
     @uc3_ns.route('/data/aggregated/<shipid>')
     class get_aggr_vessel_data(Resource):
-        #@auth.require_token
+        @auth.require_token
         def get(self, shipid):
             return lt.get_aggregated_vessel_data(dataset_url=dataset_path, shipid=shipid)
 
@@ -65,7 +65,7 @@ def init_uc3():
     ###########################################################
     @uc3_ns.route('/statistic_data/aggregated')
     class get_traj_aggr_data(Resource):
-        #@auth.require_token
+        @auth.require_token
         def get(self):
             return lt.get_aggregated_statistic_data(dataset_url=dataset_path)
 
@@ -74,7 +74,7 @@ def init_uc3():
     ###########################################################
     @uc3_ns.route('/aggr_map')
     class aggr_marker_map(Resource):
-        #@auth.require_token
+        @auth.require_token
         def get(self):
             # Get aggregated data and trajectory data
             aggr_data = lt.get_aggregated_data(dataset_url=dataset_path)
@@ -91,17 +91,12 @@ def init_uc3():
     ###########################################################
     @uc3_ns.route('/trajectory_map/<shipid>')
     class trajectory_map_trip(Resource):
-        #@auth.require_token
+        @auth.require_token
         def get(self, shipid):
             html_map = lt.create_vessel_trajectory(
                 dataset_url=dataset_path, 
                 shipid=shipid 
             )
             return html_map  
-        
-    @uc3_ns.route('/hello')
-    class Hello(Resource):
-        @auth.require_token
-        def get(self):
-            return 'Hello!'    
+           
     return uc3_ns

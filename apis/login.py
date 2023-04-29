@@ -28,6 +28,6 @@ def init_login():
                 access_token = response_data.get('access_token')
                 return access_token
             else:
-                print('Error:', response.status_code)
+                print('Error:', response.status_code, flush=True)
                 return None
     return login_ns

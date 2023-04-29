@@ -8,3 +8,4 @@ flask_oidc
 flask_restx
 haversine
 PyJWT
+jwcrypto
