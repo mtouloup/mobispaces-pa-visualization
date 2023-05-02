@@ -211,7 +211,7 @@ def create_map_with_markers_and_popups(aggr_data, traj_aggr_data):
 
     html_string = m._repr_html_()
     # Save the map to an HTML file
-    m.save('map.html')
+    #m.save('map.html')
 
     return html_string
 
