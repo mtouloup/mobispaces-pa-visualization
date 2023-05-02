@@ -187,7 +187,7 @@ def create_map_with_markers_and_popups(aggr_data, traj_aggr_data):
     df = pd.DataFrame(aggr_data).dropna(subset=['lon', 'lat'])
     df_traj = pd.DataFrame(traj_aggr_data)
     # Create a map object
-    m = folium.Map(location=[df['lat'].mean(), df['lon'].mean()], zoom_start=10, scrollWheelZoom=False)
+    m = folium.Map(location=[df['lat'].mean(), df['lon'].mean()], zoom_start=15, scrollWheelZoom=False)
     # Create a marker cluster object
     marker_cluster = MarkerCluster().add_to(m)
     # Add markers to the marker cluster
