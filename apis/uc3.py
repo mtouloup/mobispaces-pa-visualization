@@ -70,7 +70,7 @@ def init_uc3():
             return lt.get_aggregated_statistic_data(dataset_url=dataset_path)
 
 
-    # ### API for creating a  aggregated statistic data for all vessels ###
+    # ### API for creating a  aggregated statistic data for all vessels over map ###
     ###########################################################
     @uc3_ns.route('/aggr_map')
     class aggr_marker_map(Resource):

@@ -3,6 +3,8 @@ import pandas as pd
 import folium
 from folium.plugins import MarkerCluster, AntPath
 from haversine import haversine
+from static.ais_ship_types import ship_types
+
 
 def read_csv_nrows(dataset_url, n):
     """
@@ -90,23 +92,20 @@ def get_aggregated_data(dataset_url):
 
     # Convert the BaseDateTime column to a datetime object
     df['t'] = pd.to_datetime(df['t'])
-    
     # Group the data by vessel ID and get the latest timestamp for each vessel
     latest_df = df.groupby('shipid')['t'].max().reset_index()
-    
     # Merge the latest timestamp with the original dataframe to get the latest data for each vessel
     latest_data = pd.merge(latest_df, df, on=['shipid', 't'])
-    
     # Convert the BaseDateTime values to strings
     latest_data['t'] = latest_data['t'].dt.strftime('%Y-%m-%d %H:%M:%S')
-
     # Select the columns to include in the output
     output_columns = ['t','shipid','lon','lat','heading','course','speed','status','shiptype','draught','destination']
-    
+    # Replace the shiptype number with the corresponding ship type name from the shipTypes mapping object
+    latest_data['shiptype'] = latest_data['shiptype'].apply(lambda x: ship_types[x] if x in ship_types else 'Unknown')
     # Select the latest data for each vessel and return as a list of dictionaries
     latest_agg_data = latest_data[output_columns].to_dict('records')
-    
     # Return the latest aggregated data
+
     return latest_agg_data
 
 
@@ -150,6 +149,8 @@ def get_aggregated_vessel_data(dataset_url, shipid):
     latest_data['min_draught'] = min_draught
     latest_data['max_draught'] = max_draught
     latest_data['distance'] = distance
+    # Replace the shiptype number with the corresponding ship type name from the shipTypes mapping object
+    latest_data['shiptype'] = latest_data['shiptype'].apply(lambda x: ship_types[x] if x in ship_types else 'Unknown')
 
     return latest_data[output_columns + ['moving', 'avg_speed', 'min_speed', 'max_speed', 'avg_draught', 'min_draught', 'max_draught', 'distance']].to_dict('records')
 
@@ -210,9 +211,10 @@ def create_map_with_markers_and_popups(aggr_data, traj_aggr_data):
 
     html_string = m._repr_html_()
     # Save the map to an HTML file
-    #m.save('map.html')
+    m.save('map.html')
 
     return html_string
+
 
 
 ###### Create Trajectory for a specific vessel ########
