@@ -152,6 +152,10 @@ def get_aggregated_vessel_data(dataset_url, shipid):
     # Replace the shiptype number with the corresponding ship type name from the shipTypes mapping object
     latest_data['shiptype'] = latest_data['shiptype'].apply(lambda x: ship_types[x] if x in ship_types else 'Unknown')
 
+    # Convert NaN values to a string
+    latest_data = latest_data.fillna(0)
+
+
     return latest_data[output_columns + ['moving', 'avg_speed', 'min_speed', 'max_speed', 'avg_draught', 'min_draught', 'max_draught', 'distance']].to_dict('records')
 
 
