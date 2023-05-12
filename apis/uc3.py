@@ -9,7 +9,7 @@ def init_uc3():
     # Define the local file path to the dataset
     data_dir = os.path.abspath(os.path.join(os.getcwd(), '.', 'data'))
     dataset_path = os.path.join(data_dir, 'ais.csv')
-    print(dataset_path)
+    
 
     @uc3_ns.route('/trip_map/<zoom>/<markers>')
     class map_trip(Resource):
