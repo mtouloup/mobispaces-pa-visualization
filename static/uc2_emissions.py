@@ -62,7 +62,7 @@ def create_traffic_speed_map(data):
     map_center = [center_latitude, center_longitude]
 
     # Create a map with markers indicating the average speed for each segment
-    m = folium.Map(location=map_center, zoom_start=14)
+    m = folium.Map(location=map_center, zoom_start=14, scrollWheelZoom=False)
     create_markers(data, m)
 
     # Create the 'maps' directory if it doesn't exist
@@ -111,7 +111,7 @@ def create_heatmap(data):
         print("No features found.")
 
     # Create a map
-    m = folium.Map(location=map_center, zoom_start=14)
+    m = folium.Map(location=map_center, zoom_start=14, scrollWheelZoom=False)
 
     # Extract the heatmap data
     heatmap_data = []
