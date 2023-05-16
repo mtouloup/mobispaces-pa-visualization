@@ -10,6 +10,26 @@ import static.uc2_emissions as emmisions
 def init_uc2():
     uc2_ns = Namespace('UC2', description='UC2 related operations')
 
+    def build_params(bbox, time_from, time_until, data_points):
+        params = {}
+        if bbox:
+            params['bbox'] = bbox
+        if time_from:
+            params['since'] = time_from
+        if time_until:
+            params['until'] = time_until
+        if data_points:
+            params['limit'] = data_points
+        return params
+
+    def send_api_request(url, headers, params):
+        response = requests.get(url, headers=headers, params=params)
+        return response
+
+    def calculate_iterations(data_points):
+        return int(int(data_points) / 49 - 2)    
+    
+
     @uc2_ns.route('/sensor_data/<sensor_id>')
     class get_uc2_sensor_data(Resource):
         @auth.require_token
@@ -54,11 +74,8 @@ def init_uc2():
             if data_points is None:
                 data_points = 49
 
-            params = self.build_params(bbox, time_from, time_until, data_points)
-
-            api_request_start_time = time.time()
-            response = self.send_api_request(url, headers, params)
-            api_request_time = time.time() - api_request_start_time
+            params = build_params(bbox, time_from, time_until, data_points)
+            response = send_api_request(url, headers, params)
 
             if response.ok:
                 emissions_data = []
@@ -67,12 +84,10 @@ def init_uc2():
 
                 next_token = json_data.get("next")
                 n = 0
-                while n <= self.calculate_iterations(data_points):
+                while n <= calculate_iterations(data_points):
                     if next_token:
                         params["next"] = next_token
-                        api_request_start_time = time.time()
-                        response = self.send_api_request(url, headers, params)
-                        api_request_time += time.time() - api_request_start_time
+                        response = send_api_request(url, headers, params)
                         try:
                             results = response.json()
                             emissions_data.append(results)
@@ -90,24 +105,7 @@ def init_uc2():
                 response.raise_for_status()
                 return jsonify(error=str(response))
 
-        def build_params(self, bbox, time_from, time_until, data_points):
-            params = {}
-            if bbox:
-                params['bbox'] = bbox
-            if time_from:
-                params['since'] = time_from
-            if time_until:
-                params['until'] = time_until
-            if data_points:
-                params['limit'] = data_points
-            return params
 
-        def send_api_request(self, url, headers, params):
-            response = requests.get(url, headers=headers, params=params)
-            return response
-
-        def calculate_iterations(self, data_points):
-            return int(int(data_points) / 49 - 2)
         
     @uc2_ns.route('/heat_map', methods=['GET'])
     class get_uc2_heat_map(Resource):    
@@ -126,11 +124,11 @@ def init_uc2():
             if data_points is None:
                 data_points = 100
 
-            params = self.build_params(bbox, time_from, time_until, data_points)
+            params = build_params(bbox, time_from, time_until, data_points)
 
-            api_request_start_time = time.time()
-            response = self.send_api_request(url, headers, params)
-            api_request_time = time.time() - api_request_start_time
+
+            response = send_api_request(url, headers, params)
+
 
             if response.ok:
                 emissions_data = []
@@ -139,12 +137,10 @@ def init_uc2():
 
                 next_token = json_data.get("next")
                 n = 0
-                while n <= self.calculate_iterations(data_points):
+                while n <= calculate_iterations(data_points):
                     if next_token:
                         params["next"] = next_token
-                        api_request_start_time = time.time()
-                        response = self.send_api_request(url, headers, params)
-                        api_request_time += time.time() - api_request_start_time
+                        response = send_api_request(url, headers, params)
                         try:
                             results = response.json()
                             emissions_data.append(results)
