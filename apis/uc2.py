@@ -27,7 +27,7 @@ def init_uc2():
         return response
 
     def calculate_iterations(data_points):
-        return int(int(data_points) / 49 - 2)    
+        return int(int(data_points) / 100 - 1)    
     
 
     @uc2_ns.route('/sensor_data/<sensor_id>')
@@ -83,23 +83,26 @@ def init_uc2():
                 emissions_data.append(json_data)
 
                 next_token = json_data.get("next")
-                n = 0
+                n = 1
                 while n <= calculate_iterations(data_points):
                     if next_token:
                         params["next"] = next_token
                         response = send_api_request(url, headers, params)
-                        try:
-                            results = response.json()
-                            emissions_data.append(results)
-                            next_token = results.get("next")
-                            n += 1
-                        except json.JSONDecodeError:
-                            print("Invalid JSON response, continuing to next iteration...")
-                            continue
+                        if response.ok:
+                            try:
+                                results = response.json()
+                                emissions_data.append(results)
+                                next_token = results.get("next")
+                                n += 1
+                            except json.JSONDecodeError:
+                                print("Invalid JSON response, continuing to next iteration...")
+                                continue
+                        else:
+                            response.raise_for_status()
+                            return jsonify(error=str(response))
                     else:
                         break
                 map_html = emmisions.create_traffic_speed_map(emissions_data)
-
                 return map_html, 200
             else:
                 response.raise_for_status()
@@ -108,7 +111,8 @@ def init_uc2():
 
         
     @uc2_ns.route('/heat_map', methods=['GET'])
-    class get_uc2_heat_map(Resource):    
+    class get_uc2_heat_map(Resource):   
+        @auth.require_token 
         def get(self):
             url = "https://api.bosch-air-quality-solutions.com/estm/emissions"
             headers = {
@@ -126,9 +130,7 @@ def init_uc2():
 
             params = build_params(bbox, time_from, time_until, data_points)
 
-
             response = send_api_request(url, headers, params)
-
 
             if response.ok:
                 emissions_data = []
@@ -136,23 +138,26 @@ def init_uc2():
                 emissions_data.append(json_data)
 
                 next_token = json_data.get("next")
-                n = 0
+                n = 1
                 while n <= calculate_iterations(data_points):
                     if next_token:
                         params["next"] = next_token
                         response = send_api_request(url, headers, params)
-                        try:
-                            results = response.json()
-                            emissions_data.append(results)
-                            next_token = results.get("next")
-                            n += 1
-                        except json.JSONDecodeError:
-                            print("Invalid JSON response, continuing to next iteration...")
-                            continue
+                        if response.ok:
+                            try:
+                                results = response.json()
+                                emissions_data.append(results)
+                                next_token = results.get("next")
+                                n += 1
+                            except json.JSONDecodeError:
+                                print("Invalid JSON response, continuing to next iteration...")
+                                continue
+                        else:
+                            response.raise_for_status()
+                            return jsonify(error=str(response))
                     else:
                         break
                 map_html = emmisions.create_heatmap(emissions_data)
-
                 return map_html, 200
             else:
                 response.raise_for_status()
