@@ -72,7 +72,7 @@ def init_uc2():
             data_points = request.args.get('data_points')  # Retrieve the value of the 'data_points' parameter from the request
 
             if data_points is None:
-                data_points = 49
+                data_points = 100
 
             params = build_params(bbox, time_from, time_until, data_points)
             response = send_api_request(url, headers, params)
