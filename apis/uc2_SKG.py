@@ -151,8 +151,8 @@ def init_uc2_skg():
 
            # Define the data directory and file paths
             data_dir = os.path.abspath(os.path.join(os.getcwd(), '.', 'data'))
-            json_file_data = os.path.join(data_dir, 'uc2_map.json')
-            csv_file_data = os.path.join(data_dir, 'demo_roadtrafficemissions_uc2.csv')
+            json_file_data = os.path.join(data_dir, 'uc2_map_v2.json')
+            csv_file_data = os.path.join(data_dir, 'demo_roadtrafficemissions_uc_v2.csv')
 
             # Create the map with traffic data
             traffic_map = traffic_map_gen.create_traffic_map(json_file_data, csv_file_data)

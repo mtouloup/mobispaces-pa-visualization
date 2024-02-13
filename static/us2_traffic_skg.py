@@ -31,11 +31,11 @@ def create_traffic_map(json_file_path, csv_file_path):
             return 'red'
 
     # Maximum value for traffic to normalize the color representation
-    max_traffic_value = csv_data['Nm_ofVeh'].max()
+    max_traffic_value = csv_data['NmOfVeh'].max()
 
     for _, row in csv_data.iterrows():
-        road_id = row['BOSCH_network.id']
-        traffic_value = row['Nm_ofVeh']  # Traffic intensity
+        road_id = row['BoschNetworkId']
+        traffic_value = row['NmOfVeh']  # Traffic intensity
         if road_id in road_id_to_coords:
             coordinates = road_id_to_coords[road_id]
             lat_lon_pairs = [(coord[1], coord[0]) for coord in coordinates]  # Convert to (lat, lon)

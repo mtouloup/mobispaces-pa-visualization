@@ -39,6 +39,6 @@ def create_heat_map(json_file_path, csv_file_path, pollutant_metric='SumOfNOxGKm
 
     # Create and configure the Folium map
     m = folium.Map(location=[40.6401, 22.9444], zoom_start=12)
-    HeatMap(heatmap_data, min_opacity=0.5, max_zoom=17, radius=20, blur=15).add_to(m)
+    HeatMap(heatmap_data, min_opacity=0.6, max_zoom=17, radius=15, blur=10).add_to(m)
     
     return m._repr_html_()
