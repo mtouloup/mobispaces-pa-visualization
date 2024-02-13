@@ -1,15 +1,12 @@
 from flask_restx import Namespace, Resource
-import base64
 import requests
-import static.authenticate as auth
-from flask import jsonify
 
 def init_login():
-    login_ns = Namespace('login', description='Log In related operations')
+    login_ns = Namespace('LOGIN', description='Log In related operations')
 
     @login_ns.route('/<user_name>/<password>')
     class login(Resource):
-        def get(self, user_name, password):
+        def get(self, user_name, password):        
             url = 'https://mobispaces-keycloak.euprojects.net/auth/realms/Mobispaces/protocol/openid-connect/token'
             data = {
                 'client_id': 'trino-coordinator',

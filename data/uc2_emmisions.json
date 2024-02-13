@@ -1,0 +1,1891 @@
+{
+    "type": "FeatureCollection",
+    "next": "65a79f1966e9fe6d4d8a3fb4",
+    "properties": {
+        "units": {
+            "noxTp": "[g/h]",
+            "co2Tp": "[g/h]",
+            "pmTp": "[g/h]",
+            "volume": "#/h",
+            "speedAvg": "km/h",
+            "stopDurationAvg": "s",
+            "stopProbability": "%"
+        }
+    },
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.035420600115128,
+                        50.96797102425772
+                    ],
+                    [
+                        11.035182074578987,
+                        50.96784943643966
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "1266",
+                    "fromNode": "509",
+                    "segmentNo": 1
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 18.878587063642854,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.066429001631127,
+                        50.97436697818321
+                    ],
+                    [
+                        11.066146242312032,
+                        50.974350527840215
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 18
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 32.33437742357142,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.069816666510576,
+                        50.974515719421866
+                    ],
+                    [
+                        11.069532967790085,
+                        50.974523455977824
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 6
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 37.19243733364285,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.072722729965596,
+                        50.95674685658173
+                    ],
+                    [
+                        11.072990106466678,
+                        50.956696403020295
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "3250081",
+                    "fromNode": "33616",
+                    "segmentNo": 5
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 27.085737175714286,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.071235754816751,
+                        50.97448782318319
+                    ],
+                    [
+                        11.070951887776237,
+                        50.97449250688841
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 1
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 24.400020952999995,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.069532967790085,
+                        50.974523455977824
+                    ],
+                    [
+                        11.069249268975069,
+                        50.97453119184662
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 7
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 33.37468272678571,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.062104732190445,
+                        50.956179689691254
+                    ],
+                    [
+                        11.062197786,
+                        50.95638875139
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5001105",
+                    "fromNode": "50230",
+                    "segmentNo": 1
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 15.588583346514282,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.066146242312032,
+                        50.974350527840215
+                    ],
+                    [
+                        11.06587342974,
+                        50.97433465552
+                    ],
+                    [
+                        11.065863470577682,
+                        50.974334170407126
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 19
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 31.727234484999993,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.06699427802861,
+                        50.9744014882171
+                    ],
+                    [
+                        11.066711651676323,
+                        50.97438415423938
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 16
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 35.02145726328571,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.071634599342655,
+                        50.97416906338957
+                    ],
+                    [
+                        11.071577103496416,
+                        50.97432612096092
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "3250011",
+                    "fromNode": "416",
+                    "segmentNo": 1
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 23.845679584285712,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.06811718828621,
+                        50.97450643496011
+                    ],
+                    [
+                        11.067837314347797,
+                        50.974476195180344
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 12
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 35.00002765749999,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.03577783803752,
+                        50.96792318473794
+                    ],
+                    [
+                        11.0356591269,
+                        50.96809261159
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "3251484",
+                    "fromNode": "30473",
+                    "segmentNo": 4
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 13.162831705142855,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.070951887776237,
+                        50.97449250688841
+                    ],
+                    [
+                        11.070668020678468,
+                        50.97449718990568
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 2
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 27.521450940499996,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.07757588540684,
+                        50.97369511268034
+                    ],
+                    [
+                        11.07753903293382,
+                        50.97387424440814
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "86395",
+                    "fromNode": "34230",
+                    "segmentNo": 2
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 40.86352427682539,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.068681941773548,
+                        50.974538997715825
+                    ],
+                    [
+                        11.06839840469729,
+                        50.97452918815188
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 10
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 33.76574162108571,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.0716920948,
+                        50.97401200579
+                    ],
+                    [
+                        11.071634599342655,
+                        50.97416906338957
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "3250011",
+                    "fromNode": "416",
+                    "segmentNo": 0
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 34.35512978788571,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.0713900367,
+                        50.94966569139
+                    ],
+                    [
+                        11.071465215498392,
+                        50.94982807846284
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "106279",
+                    "fromNode": "33598",
+                    "segmentNo": 0
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 8.668578674399997,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.070384153523452,
+                        50.974501872234995
+                    ],
+                    [
+                        11.07023294662,
+                        50.97450436608
+                    ],
+                    [
+                        11.070100365136543,
+                        50.974507982178785
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 4
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 32.707168525499995,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.071577103496416,
+                        50.97432612096092
+                    ],
+                    [
+                        11.0715196218,
+                        50.97448313879
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "3250011",
+                    "fromNode": "416",
+                    "segmentNo": 2
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 18.570934771749997,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.070100365136543,
+                        50.974507982178785
+                    ],
+                    [
+                        11.069816666510576,
+                        50.974515719421866
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 5
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 34.57506313442857,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.022296552426916,
+                        50.96906532017315
+                    ],
+                    [
+                        11.022375092374881,
+                        50.968901651387256
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "75247",
+                    "fromNode": "559",
+                    "segmentNo": 4
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 27.561927124380947,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.077612737595565,
+                        50.97351598094097
+                    ],
+                    [
+                        11.07757588540684,
+                        50.97369511268034
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "86395",
+                    "fromNode": "34230",
+                    "segmentNo": 1
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 36.38288525634285,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.077465327134885,
+                        50.974232507828894
+                    ],
+                    [
+                        11.07742847380896,
+                        50.97441163952191
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "86395",
+                    "fromNode": "34230",
+                    "segmentNo": 5
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 49.97341956154285,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.078755563709773,
+                        50.97326657776048
+                    ],
+                    [
+                        11.078479488699948,
+                        50.97328714996977
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "80029",
+                    "fromNode": "34305",
+                    "segmentNo": 2
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 52.78575766499999,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.0715196218,
+                        50.97448313879
+                    ],
+                    [
+                        11.071235754816751,
+                        50.97448782318319
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 0
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 18.347633641857136,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.06839840469729,
+                        50.97452918815188
+                    ],
+                    [
+                        11.06829450588,
+                        50.97452559338
+                    ],
+                    [
+                        11.06811718828621,
+                        50.97450643496011
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 11
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 34.500026786642856,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.066711651676323,
+                        50.97438415423938
+                    ],
+                    [
+                        11.06647967586,
+                        50.97436992623
+                    ],
+                    [
+                        11.066429001631127,
+                        50.97436697818321
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 17
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 32.01725415999999,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.067837314347797,
+                        50.974476195180344
+                    ],
+                    [
+                        11.067557440773875,
+                        50.974445954731834
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 13
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 34.33336130666666,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.077926673284525,
+                        50.97332393819429
+                    ],
+                    [
+                        11.0776495895,
+                        50.97333684919
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "80029",
+                    "fromNode": "34305",
+                    "segmentNo": 5
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 16.471441438142854,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.07753903293382,
+                        50.97387424440814
+                    ],
+                    [
+                        11.077502180176506,
+                        50.97405337612432
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "86395",
+                    "fromNode": "34230",
+                    "segmentNo": 3
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 45.428608141952374,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.001086627950912,
+                        50.991610067592745
+                    ],
+                    [
+                        11.00133011676153,
+                        50.9917205927894
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "87259",
+                    "fromNode": "26575",
+                    "segmentNo": 1
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 37.48574447742857,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.0356591269,
+                        50.96809261159
+                    ],
+                    [
+                        11.035420600115128,
+                        50.96797102425772
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "1266",
+                    "fromNode": "509",
+                    "segmentNo": 0
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 10.550941890571426,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.077502180176506,
+                        50.97405337612432
+                    ],
+                    [
+                        11.077465327134885,
+                        50.974232507828894
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "86395",
+                    "fromNode": "34230",
+                    "segmentNo": 4
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 48.34918756493877,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.065863470577682,
+                        50.974334170407126
+                    ],
+                    [
+                        11.0655806888,
+                        50.97432039569
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 20
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 21.04292775646428,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.073264138818988,
+                        50.95666523145609
+                    ],
+                    [
+                        11.0735404209,
+                        50.95664120939
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "3250081",
+                    "fromNode": "33616",
+                    "segmentNo": 7
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 32.28574049542856,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.0776495895,
+                        50.97333684919
+                    ],
+                    [
+                        11.077612737595565,
+                        50.97351598094097
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "86395",
+                    "fromNode": "34230",
+                    "segmentNo": 0
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 11.496790965599999,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.0613947806,
+                        50.97228959689
+                    ],
+                    [
+                        11.061130687198254,
+                        50.97237215717085
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5001001",
+                    "fromNode": "431",
+                    "segmentNo": 0
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 34.45716955842857,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.067557440773875,
+                        50.974445954731834
+                    ],
+                    [
+                        11.06734495085,
+                        50.97442299464
+                    ],
+                    [
+                        11.067276904591871,
+                        50.97441882151287
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 14
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 35.38288613285714,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.025667640918307,
+                        50.9721959180376
+                    ],
+                    [
+                        11.025885694398704,
+                        50.972261122083054
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "3251231",
+                    "fromNode": "963",
+                    "segmentNo": 1
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 37.54288766285714,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.067276904591871,
+                        50.97441882151287
+                    ],
+                    [
+                        11.06699427802861,
+                        50.9744014882171
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 15
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 36.97860186192857,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.070668020678468,
+                        50.97449718990568
+                    ],
+                    [
+                        11.070384153523452,
+                        50.974501872234995
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 3
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 29.537166539714285,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        10.9851786696,
+                        50.99900223409
+                    ],
+                    [
+                        10.985317434989655,
+                        50.99882692787828
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "309713",
+                    "fromNode": "24639",
+                    "segmentNo": 0
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 29.71430901271428,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.0120453865,
+                        51.01781225949
+                    ],
+                    [
+                        11.011757276117757,
+                        51.01778235187664
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "511145",
+                    "fromNode": "28010",
+                    "segmentNo": 0
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 7.621356756321427,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.079291986,
+                        50.94915736109
+                    ],
+                    [
+                        11.079096230535999,
+                        50.9492730407307
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "81585",
+                    "fromNode": "34277",
+                    "segmentNo": 0
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 13.021439099857139,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.072217099465801,
+                        50.94911055792923
+                    ],
+                    [
+                        11.07216269505,
+                        50.9490191568
+                    ],
+                    [
+                        11.0721328627,
+                        50.94892518299
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "81575",
+                    "fromNode": "33776",
+                    "segmentNo": 5
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 31.63530461520779,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.077419107702672,
+                        50.949641830564836
+                    ],
+                    [
+                        11.0772278962,
+                        50.94972141619
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "81583",
+                    "fromNode": "34183",
+                    "segmentNo": 1
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 14.138106148523805,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.069249268975069,
+                        50.97453119184662
+                    ],
+                    [
+                        11.06896557006554,
+                        50.97453892702827
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "5000862",
+                    "fromNode": "33650",
+                    "segmentNo": 8
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 28.014260559619043,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        11.059566146960512,
+                        50.98844077028046
+                    ],
+                    [
+                        11.059736494679488,
+                        50.98829549259301
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "350",
+                    "fromNode": "272",
+                    "segmentNo": 14
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 35.17145576214285,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        10.989726110286067,
+                        51.00940197002875
+                    ],
+                    [
+                        10.98955358338089,
+                        51.009549043734324
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "3251621",
+                    "fromNode": "43949",
+                    "segmentNo": 5
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 49.45718258557142,
+                    "quality": 0.0
+                }
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        10.980336406913784,
+                        50.95749160415984
+                    ],
+                    [
+                        10.9805750774,
+                        50.95757685169
+                    ]
+                ]
+            },
+            "properties": {
+                "timeBucket": "2024-01-17T09:00:00Z",
+                "segment": {
+                    "linkId": "3249711",
+                    "fromNode": "24104",
+                    "segmentNo": 7
+                },
+                "emissions": {
+                    "noxTp": 0.0,
+                    "co2Tp": 0.0,
+                    "pmTp": 0.0,
+                    "quality": 0.0
+                },
+                "traffic": {
+                    "volume": 0,
+                    "stopProbability": 0.0,
+                    "stopDurationAvg": 0.0,
+                    "speedAvg": 20.728588991928568,
+                    "quality": 0.0
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,64 @@
+default:
+  image: docker:20.10.16
+  services:
+    - docker:20.10.16-dind
+
+stages:
+  - build
+  - deploy
+
+before_script:
+  - until docker info; do sleep 1; done
+  - echo "$DOCKER_PASSWORD" | docker login "$DOCKER_REGISTRY" --username "$DOCKER_USER" --password-stdin
+
+build:
+  stage: build
+  script:
+    - |
+      if [[ "$CI_COMMIT_TAG" ]]; then
+        tag="$CI_COMMIT_TAG"
+        echo "Running on tag '$CI_COMMIT_TAG': tag = $tag"
+      elif [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+        tag="latest"
+        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = '$tag'"
+      else
+        tag="$CI_COMMIT_REF_SLUG"
+        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
+      fi
+      image_name_with_tag="harbor.infinitech-h2020.eu/mobispaces/pava-backend:$tag"
+      echo "Full image name: $image_name_with_tag"
+      docker build --pull -t "$image_name_with_tag" .
+      docker push "$image_name_with_tag"
+
+build-tags:
+  stage: build
+  script:
+    - |
+      if [[ "$CI_COMMIT_TAG" ]]; then
+        tag="$CI_COMMIT_TAG"
+        echo "Running on tag '$CI_COMMIT_TAG': tag = $tag"
+      fi
+      image_name_with_tag="harbor.infinitech-h2020.eu/mobispaces/pava-backend:$tag"
+      echo "Full image name: $image_name_with_tag"
+      docker build --pull -t "harbor.infinitech-h2020.eu/mobispaces/pava-backend:$tag" -t "harbor.infinitech-h2020.eu/mobispaces/pava-backend:latest" .
+      docker push "harbor.infinitech-h2020.eu/mobispaces/pava-backend:$tag"
+      docker push "harbor.infinitech-h2020.eu/mobispaces/pava-backend:latest"
+  only:
+    - tags
+
+deploy:
+  stage: deploy
+  image:
+    name: bitnami/kubectl:1.27.3
+    entrypoint: ["/bin/sh", "-c"]
+  before_script: # Overriding the global before_script for this job
+    - echo "Deploying to Kubernetes"  
+  script:
+    - export KUBECONFIG=$MOBISPACES_KUBECONFIG
+    - kubectl apply -f deploy/flask
+    - kubectl set image deployment/pava-app pava-backend-app=harbor.infinitech-h2020.eu/mobispaces/pava-backend:$CI_COMMIT_TAG
+  only:
+    - tags
+  except:
+    refs:
+      - branches

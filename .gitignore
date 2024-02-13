@@ -121,3 +121,6 @@ dmypy.json
 
 #Visual Code
 .vscode
+
+#Encrypted Dataset
+/data/ais_encrypted_full.csv

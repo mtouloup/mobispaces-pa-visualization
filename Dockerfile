@@ -12,6 +12,9 @@ COPY ./requirements.txt .
 # Install any needed packages specified in requirements.txt
 RUN pip3 install --trusted-host pypi.python.org -r requirements.txt
 
+# Copy the application source code
+COPY . .
+
 #Expose Port
 EXPOSE 80
 

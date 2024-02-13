@@ -84,7 +84,6 @@ def create_map_with_trip(dataset_url, zoom_start, marker_limit):
     return html_string
 
 
-
 def get_aggregated_data(dataset_url):
     # Load the dataset
     df = pd.read_csv(dataset_url)
@@ -155,7 +154,6 @@ def get_aggregated_vessel_data(dataset_url, shipid):
     # Convert NaN values to a string
     latest_data = latest_data.fillna(0)
 
-
     return latest_data[output_columns + ['moving', 'avg_speed', 'min_speed', 'max_speed', 'avg_draught', 'min_draught', 'max_draught', 'distance']].to_dict('records')
 
 
@@ -187,7 +185,8 @@ def get_aggregated_statistic_data(dataset_url):
     # Return the aggregated data
     return agg_data
 
-def create_map_with_markers_and_popups(aggr_data, traj_aggr_data):
+def create_map_with_markers_and_popups(aggr_data, traj_aggr_data, token_status):
+    print("Token Status = " + token_status)
     #  convert aggr_data to a pandas DataFrame
     df = pd.DataFrame(aggr_data).dropna(subset=['lon', 'lat'])
     df_traj = pd.DataFrame(traj_aggr_data)
@@ -195,23 +194,30 @@ def create_map_with_markers_and_popups(aggr_data, traj_aggr_data):
     m = folium.Map(location=[df['lat'].mean(), df['lon'].mean()], zoom_start=15, scrollWheelZoom=False)
     # Create a marker cluster object
     marker_cluster = MarkerCluster().add_to(m)
+    
+    if token_status == "valid":
     # Add markers to the marker cluster
-    for index, row in df_traj.iterrows():
-        for index2, row2 in df.iterrows():
-            if row2['shipid'] == row['shipid']:
-                popup_text = '<table>'
-                popup_text += '<tr><td><b>Ship ID:</b></td><td>{}</td></tr>'.format(row['shipid'])
-                popup_text += '<tr><td><b>Ship Type:</b></td><td>{}</td></tr>'.format(row2['shiptype'])
-                popup_text += '<tr><td><b>Destination:</b></td><td>{}</td></tr>'.format(row2['destination'])
-                popup_text += '<tr><td><b>Average Speed:</b></td><td>{:.2f} knots</td></tr>'.format(row['avg_speed'])
-                popup_text += '<tr><td><b>Average Course:</b></td><td>{:.2f} degrees</td></tr>'.format(row['avg_course'])
-                popup_text += '<tr><td colspan="2"><b>Latest Positions:</b></td></tr>'
-                popup_text += '<tr><td>Time:</td><td>{}</td></tr>'.format(row2['t'])
-                popup_text += '<tr><td>Latitude:</td><td>{:.4f} deg</td></tr>'.format(row2['lat'])
-                popup_text += '<tr><td>Longitude:</td><td>{:.4f} deg</td></tr>'.format(row2['lon'])
-                popup_text += '<tr><td colspan="2"><a href="../../pages/dashboard/usecase3_vessel_history.html?data-shipid='+row['shipid']+'" target="_blank">View details</a></td></tr>'
-                popup_text += '</table>'
-                folium.Marker(location=[row2['lat'], row2['lon']], popup=popup_text).add_to(marker_cluster)
+        for index, row in df_traj.iterrows():
+            for index2, row2 in df.iterrows():
+                if row2['shipid'] == row['shipid']:
+                    popup_text = '<table>'
+                    popup_text += '<tr><td><b>Ship ID:</b></td><td>{}</td></tr>'.format(row['shipid'])
+                    popup_text += '<tr><td><b>Ship Type:</b></td><td>{}</td></tr>'.format(row2['shiptype'])
+                    popup_text += '<tr><td><b>Destination:</b></td><td>{}</td></tr>'.format(row2['destination'])
+                    popup_text += '<tr><td><b>Average Speed:</b></td><td>{:.2f} knots</td></tr>'.format(row['avg_speed'])
+                    popup_text += '<tr><td><b>Average Course:</b></td><td>{:.2f} degrees</td></tr>'.format(row['avg_course'])
+                    popup_text += '<tr><td colspan="2"><b>Latest Positions:</b></td></tr>'
+                    popup_text += '<tr><td>Time:</td><td>{}</td></tr>'.format(row2['t'])
+                    popup_text += '<tr><td>Latitude:</td><td>{:.4f} deg</td></tr>'.format(row2['lat'])
+                    popup_text += '<tr><td>Longitude:</td><td>{:.4f} deg</td></tr>'.format(row2['lon'])
+                    popup_text += '<tr><td colspan="2"><a href="../../pages/dashboard/usecase3_vessel_history.html?data-shipid='+row['shipid']+'" target="_blank">View details</a></td></tr>'
+                    popup_text += '</table>'
+                    folium.Marker(location=[row2['lat'], row2['lon']], popup=popup_text).add_to(marker_cluster)
+    elif token_status == "invalid":
+        # Add a marker with encrypted data message for invalid or missing token
+        for index, row in df.iterrows():
+            encrypted_popup_text = '<h1>User Role is not able to decrypt data</h1>'
+            folium.Marker(location=[row['lat'], row['lon']], popup=encrypted_popup_text).add_to(marker_cluster)         
 
     html_string = m._repr_html_()
     # Save the map to an HTML file

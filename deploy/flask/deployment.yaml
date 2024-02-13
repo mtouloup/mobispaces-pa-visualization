@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pava-app
+  labels:
+    app: pava-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pava-app
+  template:
+    metadata:
+      labels:
+        app: pava-app
+    spec:
+      containers:
+      - name: pava-backend-app
+        image: harbor.infinitech-h2020.eu/mobispaces/pava-backend:latest
+        imagePullPolicy: Always
+        ports:
+        - name: flask-port
+          containerPort: 80
+      imagePullSecrets:
+      - name: regcred
