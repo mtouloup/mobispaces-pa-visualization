@@ -3,7 +3,7 @@ import pandas as pd
 import folium
 from folium.plugins import HeatMap
 
-def create_heat_map(json_file_path, csv_file_path, pollutant_metric='SumOfNOxGKm'):
+def create_heat_map(json_file_path, csv_file_path, pollutant_metric='SumOfNOxGKm', start_hour=None, end_hour=None):
     # Load JSON data with road segment coordinates
     with open(json_file_path, 'r') as json_file:
         road_segments_data = json.load(json_file)
@@ -20,6 +20,11 @@ def create_heat_map(json_file_path, csv_file_path, pollutant_metric='SumOfNOxGKm
                          'SumOfECMJVkm', 'SumOfPM10GVkm', 'SumOfPM25GVkm', 'SumOfVOCGVkm']
     for col in pollutant_columns:
         csv_data[col] = pd.to_numeric(csv_data[col], errors='coerce')
+
+    # Filter the data by the specified hour range if provided
+    if start_hour is not None and end_hour is not None:
+        csv_data = csv_data[(csv_data['Hour'] >= start_hour) & (csv_data['Hour'] <= end_hour)]
+    # Note: No need for an else part here as we want to include all data if no specific hours are provided
 
     # Prepare data for the heatmap
     heatmap_data = []

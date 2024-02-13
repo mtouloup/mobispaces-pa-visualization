@@ -38,9 +38,23 @@ def init_uc2_skg():
                                 'SumOfPM25GKm','SumOfVOCGKm','SumOfNOxGVkm','SumOfCOGVkm','SumOfCO2GVkm',
                                 'SumOfECMJVkm','SumOfPM10GVkm','SumOfPM25GVkm','SumOfVOCGVkm']
             parser.add_argument('pollutant_metric', type=str, default='SumOfNOxGKm', choices=pollutant_choices)
-            
+            parser.add_argument('start_hour', type=int, help="Start hour for filtering data", required=False)
+            parser.add_argument('end_hour', type=int, help="End hour for filtering data", required=False)
+
             try:
                 args = parser.parse_args()
+                start_hour = args.get('start_hour')
+                end_hour = args.get('end_hour')
+
+                # Range checks
+                if (start_hour is not None and not (0 <= start_hour <= 23)) or (end_hour is not None and not (0 <= end_hour <= 23)):
+                    return {"error": "Hours must be between 0 and 23 inclusive."}, 400
+
+                # Logical consistency check
+                if start_hour is not None and end_hour is not None and start_hour > end_hour:
+                    return {"error": "Start hour must be less than or equal to end hour."}, 400
+        
+
             except Exception as e:  # This will catch the parsing exception if the argument is not in the choices
                 # Construct a custom error message that includes the valid choices
                 error_msg = f"Invalid pollutant_metric. Allowed values are: {', '.join(pollutant_choices)}."
@@ -61,7 +75,7 @@ def init_uc2_skg():
             csv_file_data = os.path.join(data_dir, 'demo_roadtrafficemissions_uc_v2.csv')
 
             # Create the map with traffic data, passing the selected pollutant metric
-            heat_map = heat_map_gen.create_heat_map(json_file_data, csv_file_data, pollutant_metric)
+            heat_map = heat_map_gen.create_heat_map(json_file_data, csv_file_data, pollutant_metric, start_hour, end_hour)
 
             if export_format == 'html':
                 return Response(
