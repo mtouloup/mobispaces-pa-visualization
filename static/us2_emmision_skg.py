@@ -15,9 +15,8 @@ def create_heat_map(json_file_path, csv_file_path, pollutant_metric='SumOfNOxGKm
     csv_data = pd.read_csv(csv_file_path)
 
     # Convert specified emissions metrics to numeric, handling non-numeric values
-    pollutant_columns = ['SumOfNOxGKm', 'SumOfCOGKm', 'SumOfCO2GKm', 'SumOfECMJKm', 'SumOfPM10GKm',
-                         'SumOfPM25GKm', 'SumOfVOCGKm', 'SumOfNOxGVkm', 'SumOfCOGVkm', 'SumOfCO2GVkm',
-                         'SumOfECMJVkm', 'SumOfPM10GVkm', 'SumOfPM25GVkm', 'SumOfVOCGVkm']
+    pollutant_columns = ['SumOfNOxGKm', 'SumOfPM10GKm', 'SumOfPM25GKm', 'SumOfCOGKm', 'SumOfCO2GKm',
+                         'SumOfECMJKm', 'SumOfVOCGKm']
     for col in pollutant_columns:
         csv_data[col] = pd.to_numeric(csv_data[col], errors='coerce')
 
