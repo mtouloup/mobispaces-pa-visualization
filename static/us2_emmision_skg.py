@@ -3,59 +3,38 @@ import pandas as pd
 import folium
 from folium.plugins import HeatMap
 
-def create_heat_map(json_file_path, csv_file_path, pollutant_metric='NOx_g_km'):
+def create_heat_map(json_file_path, csv_file_path, pollutant_metric='SumOfNOxGKm'):
     # Load JSON data with road segment coordinates
     with open(json_file_path, 'r') as json_file:
         road_segments_data = json.load(json_file)
 
-    # Create a mapping from BOSCH_network.id to coordinates
-    road_id_to_coords = {}
-    for feature in road_segments_data['features']:
-        road_id = feature['properties']['id']
-        coordinates = feature['geometry']['coordinates']
-        road_id_to_coords[road_id] = coordinates
+    road_id_to_coords = {feature['properties']['id']: feature['geometry']['coordinates']
+                         for feature in road_segments_data['features']}
 
     # Load CSV data with emissions
     csv_data = pd.read_csv(csv_file_path)
 
-    # Convert 'NOx_g_km' to numeric, set errors='coerce' to handle non-numeric values
-    csv_data['NOx_g_km'] = pd.to_numeric(csv_data['NOx_g_km'], errors='coerce')
-    csv_data['CO_g_km'] = pd.to_numeric(csv_data['CO_g_km'], errors='coerce')
-    csv_data['CO2_g_km'] = pd.to_numeric(csv_data['CO2_g_km'], errors='coerce')
-    csv_data['EC_MJ_km'] = pd.to_numeric(csv_data['EC_MJ_km'], errors='coerce')
-    csv_data['PM10_g_km'] = pd.to_numeric(csv_data['PM10_g_km'], errors='coerce')
-    csv_data['PM2.5_g_km'] = pd.to_numeric(csv_data['PM2.5_g_km'], errors='coerce')
+    # Convert specified emissions metrics to numeric, handling non-numeric values
+    pollutant_columns = ['SumOfNOxGKm', 'SumOfCOGKm', 'SumOfCO2GKm', 'SumOfECMJKm', 'SumOfPM10GKm',
+                         'SumOfPM25GKm', 'SumOfVOCGKm', 'SumOfNOxGVkm', 'SumOfCOGVkm', 'SumOfCO2GVkm',
+                         'SumOfECMJVkm', 'SumOfPM10GVkm', 'SumOfPM25GVkm', 'SumOfVOCGVkm']
+    for col in pollutant_columns:
+        csv_data[col] = pd.to_numeric(csv_data[col], errors='coerce')
 
     # Prepare data for the heatmap
     heatmap_data = []
-    print(pollutant_metric)
     for _, row in csv_data.iterrows():
-        road_id = row['BOSCH_network.id']
-        
-        # Skip rows where 'NOx_g_km' is NaN
+        road_id = row['BoschNetworkId']
         if pd.isnull(row[pollutant_metric]):
-            continue  # Or assign a default value if preferred
-        else:
-            value = row[pollutant_metric]
-
-        # If the road segment is in the JSON data, add its coordinates to the heatmap data
+            continue
+        value = row[pollutant_metric]
         if road_id in road_id_to_coords:
             for coord_pair in road_id_to_coords[road_id]:
-                lat, lon = coord_pair[1], coord_pair[0]  # Ensure the order is (latitude, longitude)
+                lat, lon = coord_pair[1], coord_pair[0]
                 heatmap_data.append([lat, lon, value])
 
-    # Create a Folium map centered on Thessaloniki
+    # Create and configure the Folium map
     m = folium.Map(location=[40.6401, 22.9444], zoom_start=12)
-
-    # Add heatmap layer
-    HeatMap(
-        heatmap_data,
-        min_opacity=0.5,
-        max_zoom=17,
-        radius=20,  # Adjust if necessary
-        blur=15    # Adjust if necessary
-    ).add_to(m)
-
-    html_string = m._repr_html_()
-
-    return html_string
+    HeatMap(heatmap_data, min_opacity=0.5, max_zoom=17, radius=20, blur=15).add_to(m)
+    
+    return m._repr_html_()

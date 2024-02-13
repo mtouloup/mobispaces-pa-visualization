@@ -6,7 +6,7 @@ import static.us2_traffic_skg as traffic_map_gen
 import os
 
 def init_uc2_skg():
-    uc2_ns_skg = Namespace('UC2_SKG', description='UC2 related operationsfor the city of Thessaloniki')
+    uc2_ns_skg = Namespace('UC2_SKG', description='UC2 related operations for the city of Thessaloniki')
 
     ALLOWED_FORMATS_MAP = {'div', 'html'}
 
@@ -34,8 +34,18 @@ def init_uc2_skg():
         @auth.require_token
         def get(self, export_format='div'):
             parser = reqparse.RequestParser()
-            parser.add_argument('pollutant_metric', type=str, default='NOx_g_km', choices=['NOx_g_km', 'CO_g_km', 'CO2_g_km', 'EC_MJ_km', 'PM10_g_km', 'PM2.5_g_km'])
-            args = parser.parse_args()
+            pollutant_choices = ['SumOfNOxGKm','SumOfCOGKm','SumOfCO2GKm','SumOfECMJKm','SumOfPM10GKm',
+                                'SumOfPM25GKm','SumOfVOCGKm','SumOfNOxGVkm','SumOfCOGVkm','SumOfCO2GVkm',
+                                'SumOfECMJVkm','SumOfPM10GVkm','SumOfPM25GVkm','SumOfVOCGVkm']
+            parser.add_argument('pollutant_metric', type=str, default='SumOfNOxGKm', choices=pollutant_choices)
+            
+            try:
+                args = parser.parse_args()
+            except Exception as e:  # This will catch the parsing exception if the argument is not in the choices
+                # Construct a custom error message that includes the valid choices
+                error_msg = f"Invalid pollutant_metric. Allowed values are: {', '.join(pollutant_choices)}."
+                return {"error": error_msg}, 400
+
             pollutant_metric = args['pollutant_metric']
 
             token_status = getattr(g, 'token_status', 'none')
@@ -47,8 +57,8 @@ def init_uc2_skg():
 
             # Define the data directory and file paths
             data_dir = os.path.abspath(os.path.join(os.getcwd(), '.', 'data'))
-            json_file_data = os.path.join(data_dir, 'uc2_map.json')
-            csv_file_data = os.path.join(data_dir, 'demo_roadtrafficemissions_uc2.csv')
+            json_file_data = os.path.join(data_dir, 'uc2_map_v2.json')
+            csv_file_data = os.path.join(data_dir, 'demo_roadtrafficemissions_uc_v2.csv')
 
             # Create the map with traffic data, passing the selected pollutant metric
             heat_map = heat_map_gen.create_heat_map(json_file_data, csv_file_data, pollutant_metric)
