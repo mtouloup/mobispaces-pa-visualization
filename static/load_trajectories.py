@@ -156,6 +156,24 @@ def get_aggregated_vessel_data(dataset_url, shipid):
 
     return latest_data[output_columns + ['moving', 'avg_speed', 'min_speed', 'max_speed', 'avg_draught', 'min_draught', 'max_draught', 'distance']].to_dict('records')
 
+def get_all_vessel_data(dataset_url, shipid):
+    # Load the dataset
+    df = pd.read_csv(dataset_url)
+    df = df.dropna(subset=['lon', 'lat'])
+
+    # Convert the BaseDateTime column to a datetime object and then to a string
+    df['t'] = pd.to_datetime(df['t']).astype(str)
+    # Filter the data for the given shipid
+    vessel_data = df[df['shipid'] == shipid]
+
+    # Replace the shiptype number with the corresponding ship type name from the shipTypes mapping object
+    vessel_data['shiptype'] = vessel_data['shiptype'].apply(lambda x: ship_types[x] if x in ship_types else 'Unknown')
+
+    # Convert NaN values to a string
+    vessel_data = vessel_data.fillna(0)
+
+    return vessel_data.to_dict('records')
+
 
 def get_aggregated_statistic_data(dataset_url):
     # Load the dataset

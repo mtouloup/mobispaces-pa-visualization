@@ -297,7 +297,24 @@ def init_uc3():
                 return {"error": "Invalid format. Allowed values are: 'json', 'csv', 'xlsx'."}, 400    
             data = lt.get_aggregated_vessel_data(dataset_url=decrypted_dataset_path, shipid=shipid)
             return data_to_export_format(data, export_format)
+        
+    @uc3_ns.route('/vessel/data/<shipid>')
+    class get_ship_data(Resource):
+        @auth.require_token
+        def get(self, shipid, export_format="json", token_status="valid"):
+            token_status = getattr(g, 'token_status', 'none')
 
+            if token_status != "valid":
+                return {"error": "Authentication Issue | Check User Credentials"}, 403
+            
+            user_role = getattr(g, 'user_role', 'none')
+            if export_format not in ALLOWED_FORMATS_DATA:
+                return {"error": "Invalid format. Allowed values are: 'json', 'csv', 'xlsx'."}, 400  
+            print("Hello!!!")  
+            data = lt.get_all_vessel_data(dataset_url=decrypted_dataset_path, shipid=shipid)
+            return data_to_export_format(data, export_format)
+            #return True
+        
     @uc3_ns.route('/statistic_data/aggregated/export/<export_format>')
     class get_traj_aggr_data_with_export(Resource):
         @auth.require_token
