@@ -79,6 +79,10 @@ After running these commands, the PAVA Backend will be up and running on `http:/
 
  Contributions to the PAVA Backend are welcome. Please follow the standard git workflow - fork, clone, commit, push, and create pull requests.
 
+## Acknowledgments
+
+The research leading to the results presented in this project has received funding from the European Union’s funded Project MobiSpaces under grant agreement no 101070279.
+
 ## Contact
 
   Marios Touloupou [touloupos@gmail.com]
