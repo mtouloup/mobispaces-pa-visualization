@@ -1,4 +1,3 @@
-import os
 from flask import Flask, Blueprint
 from flask_cors import CORS
 from flask_restx import Api, apidoc
@@ -6,6 +5,7 @@ from apis.uc2_ERF import init_uc2_erfut
 from apis.uc2_SKG import init_uc2_skg
 from apis.uc3 import init_uc3
 from apis.login import init_login
+from apis.uc1 import init_uc1
 
 apidoc.apidoc.url_prefix = '/pava'
 app = Flask(__name__, static_folder='static', static_url_path='/pava/static')
@@ -36,11 +36,13 @@ uc2_ns_erfut = init_uc2_erfut()
 uc2_ns_skg = init_uc2_skg()
 login_ns = init_login()
 uc3_ns = init_uc3()
+uc1_ns = init_uc1()
+
 api.add_namespace(uc2_ns_erfut)
 api.add_namespace(uc3_ns)
 api.add_namespace(login_ns)
 api.add_namespace(uc2_ns_skg)
-
+api.add_namespace(uc1_ns)
 # Main driver function
 if __name__ == '__main__':
     # Run() method of Flask class runs the application on the local development server.
