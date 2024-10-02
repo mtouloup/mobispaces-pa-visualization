@@ -1,6 +1,6 @@
 import os
 import logging
-from flask import jsonify, send_file
+from flask import jsonify, send_file, g
 from flask_restx import Namespace, Resource
 import static.authenticate as auth
 import pandas as pd
@@ -8,6 +8,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import io
 import seaborn as sns
+import matplotlib.pyplot as plt
+import seaborn as sns
+import folium
+import random
+
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)  # Log all messages, including debug
@@ -152,7 +157,12 @@ def init_uc1():
     @uc1_ns.route('/battery_dashboard')
     class BatteryDashboard(Resource):
         @auth.require_token
-        def get(self):
+        def get(self, token_status="valid"):
+            token_status = getattr(g, 'token_status', 'none')
+
+            if token_status != "valid":
+                return {"error": "Authentication Issue | Check User Credentials"}, 403
+            
             try:
                 all_buses_data = []
                 filename = "20231015_bus.csv"
@@ -222,16 +232,21 @@ def init_uc1():
     @uc1_ns.route('/average_delays/graph')
     class AverageDelaysGraph(Resource):
         @auth.require_token
-        def get(self):
+        def get(self, token_status="valid"):
+            token_status = getattr(g, 'token_status', 'none')
+
+            if token_status != "valid":
+                return {"error": "Authentication Issue | Check User Credentials"}, 403
+            
             try:
-                # Calculate average delays for buses 0E801-0E830
-                average_delays = self.calculate_average_delays_for_selected_buses()
+                # Calculate average delays and punctuality for buses 0E801-0E830
+                average_delays, punctuality_percentages = self.calculate_average_delays_for_selected_buses()
 
-                if not average_delays:
-                    return jsonify({"error": "No delay data available"}), 404
+                if not average_delays or not punctuality_percentages:
+                    return jsonify({"error": "No delay or punctuality data available"}), 404
 
-                # Plot the delays
-                fig = self.plot_average_delays_graph(average_delays)
+                # Plot the delays and punctuality percentages
+                fig = self.plot_average_delays_graph(average_delays, punctuality_percentages)
 
                 # Save the figure to a BytesIO object
                 from io import BytesIO
@@ -242,7 +257,7 @@ def init_uc1():
                 # Return the image as a response
                 from flask import send_file
                 return send_file(img, mimetype='image/png')
-            
+
             except Exception as e:
                 logging.error(f"Unhandled exception in generating average delays graph: {e}")
                 return jsonify({"error": str(e)}), 500
@@ -250,6 +265,7 @@ def init_uc1():
         def calculate_average_delays_for_selected_buses(self):
             delays = {}
             counts = {}
+            punctual_counts = {}  # New dictionary to store punctual counts (within -300s and +300s)
 
             valid_bus_ids = {f"0E{str(i).zfill(3)}" for i in range(801, 831)}  # Set of valid bus IDs 0E801 - 0E830
 
@@ -277,43 +293,288 @@ def init_uc1():
                                     if delay_seconds is None:
                                         continue  # Skip processing if time parsing failed
 
+                                    # Initialize data for new bus lines
                                     if bus_line not in delays:
                                         delays[bus_line] = 0
                                         counts[bus_line] = 0
-                                    
+                                        punctual_counts[bus_line] = 0  # Initialize punctuality counter for each bus line
+
                                     delays[bus_line] += delay_seconds
                                     counts[bus_line] += 1
+
+                                    # Count punctual events (delay between -300 and +300 seconds)
+                                    if -300 <= delay_seconds <= 300:
+                                        punctual_counts[bus_line] += 1
+
                                 except Exception as e:
                                     logging.error(f"Error processing line '{line.strip()}': {e}")
                                     continue
 
-                # Calculate average delays and convert to minutes
+                # Calculate average delays and convert to minutes, also calculate punctuality percentage
                 average_delays = {
-                    bus_line: (delays[bus_line] / counts[bus_line]) / 60
+                    bus_line: (delays[bus_line] / counts[bus_line]) / 60  # Convert to minutes
                     for bus_line in delays
                 }
-                return average_delays
-            
+                punctuality_percentages = {
+                    bus_line: (punctual_counts[bus_line] / counts[bus_line]) * 100  # Calculate percentage of punctual events
+                    for bus_line in punctual_counts
+                }
+
+                return average_delays, punctuality_percentages
+
             except Exception as e:
                 logging.error(f"Error calculating average delays from datasets: {e}")
-                return None
+                return None, None
 
-        def plot_average_delays_graph(self, average_delays):
-            import matplotlib.pyplot as plt
-            import seaborn as sns
-
+        def plot_average_delays_graph(self, average_delays, punctuality_percentages):
             bus_lines = list(average_delays.keys())
             delays = [delay for delay in average_delays.values()]
+            punctualities = [punctuality_percentages[bus_line] for bus_line in bus_lines]  # Get punctuality percentages
 
-            plt.figure(figsize=(10, 6))
-            sns.barplot(x=bus_lines, y=delays, palette="viridis")
-            plt.xlabel('Bus Line')
-            plt.ylabel('Average Delay (minutes)')
-            plt.title('Average Delay per Bus Line (0E801 - 0E830)')
+            # Create a figure with two subplots (bar charts for delays and punctuality)
+            fig, ax1 = plt.subplots(figsize=(10, 6))
+
+            # Plot average delays
+            sns.barplot(x=bus_lines, y=delays, palette="viridis", ax=ax1)
+            ax1.set_xlabel('Bus Line')
+            ax1.set_ylabel('Average Delay (minutes)', color='b')
+            ax1.tick_params(axis='y', labelcolor='b')
             plt.xticks(rotation=45)
+
+            # Create another y-axis for punctuality percentages
+            ax2 = ax1.twinx()
+            sns.lineplot(x=bus_lines, y=punctualities, marker='o', color='r', ax=ax2)
+            ax2.set_ylabel('Punctuality (%)', color='r')
+            ax2.tick_params(axis='y', labelcolor='r')
+
+            plt.title('Average Delay per Bus Line with Punctuality Percentage (0E801 - 0E830)')
             plt.tight_layout()
 
-            return plt.gcf()
+            return fig
+
+    @uc1_ns.route('/trajectories_and_delays')
+    class TrajectoriesAndDelays(Resource):
+        @auth.require_token
+        def get(self, token_status="valid"):
+            token_status = getattr(g, 'token_status', 'none')
+
+            if token_status != "valid":
+                return {"error": "Authentication Issue | Check User Credentials"}, 403
+            
+            try:
+                logging.debug("Starting to process trajectories and delays.")
+
+                trajectories = {}
+                delays = {}
+
+                valid_bus_lines = {"3", "8"}  # We're interested only in lines 3 and 8
+
+                # Iterate over all CSV files in the directory
+                logging.debug(f"Looking for files in directory: {os.path.join(data_dir, 'yyyymmdd_Exxx')}")
+                for filename in os.listdir(os.path.join(data_dir, 'yyyymmdd_Exxx')):
+                    if filename.endswith('_E.csv'):
+                        file_path = os.path.join(data_dir, 'yyyymmdd_Exxx', filename)
+                        logging.debug(f"Processing file: {file_path}")
+
+                        with open(file_path, 'r') as f:
+                            next(f)  # Skip the first line (header)
+                            for line in f:
+                                try:
+                                    values = line.split(',')
+
+                                    if len(values) < 6:  # Ensure there are enough columns
+                                        logging.warning(f"Skipping line with insufficient columns: {line.strip()}")
+                                        continue
+
+                                    bus_id = values[0]
+                                    signal = values[1]
+                                    timestamp = values[2]
+                                    delay_value = values[3]
+                                    latitude = values[4]
+                                    longitude = values[5]
+
+                                    # Filter by valid bus lines (3 and 8) based on bus_id
+                                    logging.debug(f"Bus ID {bus_id} found. Checking if it belongs to line 3 or 8.")
+                                    if bus_id not in valid_bus_lines:
+                                        logging.debug(f"Bus ID {bus_id} does not belong to line 3 or 8. Skipping.")
+                                        continue
+
+                                    # Store trajectory data (latitude and longitude)
+                                    if bus_id not in trajectories:
+                                        trajectories[bus_id] = {'latitudes': [], 'longitudes': [], 'timestamps': []}
+
+                                    trajectories[bus_id]['latitudes'].append(float(latitude))
+                                    trajectories[bus_id]['longitudes'].append(float(longitude))
+                                    trajectories[bus_id]['timestamps'].append(pd.to_datetime(timestamp))
+
+                                    # Store delay data
+                                    delay_seconds = parse_time_to_seconds(delay_value)
+                                    if delay_seconds is not None:
+                                        if bus_id not in delays:
+                                            delays[bus_id] = {'timestamps': [], 'delays': []}
+                                        
+                                        delays[bus_id]['timestamps'].append(pd.to_datetime(timestamp))
+                                        delays[bus_id]['delays'].append(delay_seconds)
+                                    else:
+                                        logging.debug(f"Could not parse delay value: {delay_value}")
+
+                                except Exception as e:
+                                    logging.error(f"Error processing line '{line.strip()}': {e}")
+                                    continue
+
+                if not trajectories or not delays:
+                    logging.error("No valid trajectory or delay data found.")
+                    return jsonify({"error": "No trajectory or delay data available"}), 404
+
+                logging.debug("Generating plots for trajectories and delays.")
+                # Generate the plots for trajectories and delays
+                fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 10))
+
+                # Plot trajectories (Latitude vs Longitude)
+                for bus_id in trajectories:
+                    latitudes = trajectories[bus_id]['latitudes']
+                    longitudes = trajectories[bus_id]['longitudes']
+                    logging.debug(f"Plotting trajectory for bus line {bus_id}.")
+                    ax1.plot(longitudes, latitudes, marker='o', label=f"Bus Line {bus_id}")
+                
+                ax1.set_title('Bus Trajectories for Lines 3 and 8')
+                ax1.set_xlabel('Longitude')
+                ax1.set_ylabel('Latitude')
+                ax1.legend()
+
+                # Plot delays over time
+                for bus_id in delays:
+                    timestamps = delays[bus_id]['timestamps']
+                    delay_values = delays[bus_id]['delays']
+                    logging.debug(f"Plotting delays for bus line {bus_id}.")
+                    ax2.plot(timestamps, delay_values, marker='o', label=f"Bus Line {bus_id}")
+                
+                ax2.set_title('Delays Over Time for Lines 3 and 8')
+                ax2.set_xlabel('Time')
+                ax2.set_ylabel('Delay (seconds)')
+                ax2.legend()
+
+                plt.tight_layout()
+
+                # Save the plot to a bytes buffer instead of displaying it
+                img = io.BytesIO()
+                plt.savefig(img, format='png')
+                img.seek(0)
+                logging.debug("Returning the generated plot as a response.")
+
+                # Return the image as a response directly, without JSON serialization
+                return send_file(img, mimetype='image/png')
+
+            except Exception as e:
+                logging.error(f"Unhandled exception in generating trajectories and delays plot: {e}")
+                return jsonify({"error": str(e)}), 500
+
+
+
+    @uc1_ns.route('/bus_trajectories_map')
+    class BusTrajectoriesMap(Resource):
+        @auth.require_token
+        def get(self, token_status="valid"):
+            token_status = getattr(g, 'token_status', 'none')
+
+            if token_status != "valid":
+                return {"error": "Authentication Issue | Check User Credentials"}, 403
+            
+            try:
+                # Define the file paths (update with correct paths)
+                data_dir = os.path.abspath(os.path.join(os.getcwd(), '.', 'data', 'iroute', 'service execution'))
+                bus_file = "20231015_bus.csv"
+                bus_file_path = os.path.join(data_dir, 'yyyymmdd_bus', bus_file)
+
+                percorsi_file = "Percorsi_bus.xlsx"
+                percorsi_file_path = os.path.join(data_dir, 'yyyymmdd_bus', percorsi_file)
+
+                stops_file = 'stops.csv'
+                stops_file_path = os.path.join(data_dir, 'yyyymmdd_bus', stops_file)
+
+                # Load the bus data (20231015_bus.csv) without headers
+                bus_df = pd.read_csv(bus_file_path, header=None)
+
+                # Load the percorsi bus data (Percorsi_bus.xlsx for Path IDs for lines 003 and 008)
+                percorsi_df = pd.read_excel(percorsi_file_path)
+
+                # Load the stops data (stops.csv for stop coordinates)
+                stops_df = pd.read_csv(stops_file_path)
+
+                # Filter the Percorsi Bus file for lines '003' and '008' using the 'LINEA' column
+                line_003_008_ids = percorsi_df[percorsi_df['LINEA'].isin(['003', '008'])]['ID_PERCORSO'].tolist()
+
+                # Filter the bus data using Path ID from column 11 (index 10)
+                filtered_bus_data = bus_df[bus_df[10].isin(line_003_008_ids)]
+
+                # Merge filtered bus data with stops_df using Stop ID (column 8 of bus_df matches 'stop_code' in stops_df)
+                merged_data = pd.merge(filtered_bus_data, stops_df, left_on=8, right_on='stop_code', how='left')
+
+                # Group data by Block ID (column 4, index 3) and Path ID (column 11, index 10) to define trips
+                trip_groups = merged_data.groupby([3, 10])
+
+                # Initialize a map centered around Genova
+                map_genova = folium.Map(location=[44.414568, 8.926358], zoom_start=13)
+
+                # Generate random colors for different trips
+                def generate_random_color():
+                    return "#{:06x}".format(random.randint(0, 0xFFFFFF))
+
+                # Function to calculate average delay (assumed in column 26, index 25 in seconds)
+                def calculate_average_delay(trip_data):
+                    delay_seconds = trip_data[25].dropna()  # Drop NaN values
+                    if len(delay_seconds) > 0:
+                        average_delay = delay_seconds.mean() / 60  # Convert to minutes
+                        return round(average_delay, 2)
+                    else:
+                        return None
+
+                # Loop over each trip group
+                for (block_id, path_id), trip_data in trip_groups:
+                    # Store coordinates for polyline
+                    trip_coords = []
+
+                    # Calculate average delay for the trip
+                    average_delay = calculate_average_delay(trip_data)
+
+                    # Get the stops for this trip and plot them on the map
+                    for idx, stop in trip_data.iterrows():
+                        stop_lat = stop['stop_lat']
+                        stop_lon = stop['stop_lon']
+
+                        # Check if lat/lon are valid (not NaN)
+                        if pd.notna(stop_lat) and pd.notna(stop_lon):
+                            trip_coords.append([stop_lat, stop_lon])  # Append the stop coordinates to the list
+
+                            # Add a marker for each stop
+                            folium.Marker(
+                                location=[stop_lat, stop_lon],
+                                popup=f"Block ID: {block_id}, Path ID: {path_id}, Stop Name: {stop['stop_name']}",
+                                icon=folium.Icon(color="blue")
+                            ).add_to(map_genova)
+
+                    # Plot polyline for this trip (if we have at least 2 coordinates)
+                    if len(trip_coords) > 1:
+                        polyline = folium.PolyLine(
+                            trip_coords,
+                            color=generate_random_color(),
+                            weight=5,
+                            opacity=0.7,
+                            tooltip=f"Block ID: {block_id}, Path ID: {path_id}, Avg Delay: {average_delay} mins" if average_delay else f"Block ID: {block_id}, Path ID: {path_id}"
+                        )
+                        polyline.add_to(map_genova)
+
+                # Save the map to a bytes buffer instead of displaying it
+                output_html_path = os.path.join(os.getcwd(), 'genova_bus_map_trajectories_with_delay.html')
+                map_genova.save(output_html_path)
+
+                # Return the generated HTML map as a downloadable file
+                return send_file(output_html_path, as_attachment=True, mimetype='text/html')
+
+            except Exception as e:
+                logging.error(f"Error generating bus trajectories map: {e}")
+                return jsonify({"error": str(e)}), 500
+
 
 
     return uc1_ns
