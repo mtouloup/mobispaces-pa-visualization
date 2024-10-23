@@ -10,3 +10,5 @@ haversine
 PyJWT
 jwcrypto
 xlsxwriter
+random
+seaborn

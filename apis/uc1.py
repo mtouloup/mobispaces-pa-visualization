@@ -8,8 +8,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import io
 import seaborn as sns
-import matplotlib.pyplot as plt
-import seaborn as sns
 import folium
 import random
 
@@ -352,131 +350,12 @@ def init_uc1():
 
             return fig
 
-    @uc1_ns.route('/trajectories_and_delays')
-    class TrajectoriesAndDelays(Resource):
-        @auth.require_token
-        def get(self, token_status="valid"):
-            token_status = getattr(g, 'token_status', 'none')
-
-            if token_status != "valid":
-                return {"error": "Authentication Issue | Check User Credentials"}, 403
-            
-            try:
-                logging.debug("Starting to process trajectories and delays.")
-
-                trajectories = {}
-                delays = {}
-
-                valid_bus_lines = {"3", "8"}  # We're interested only in lines 3 and 8
-
-                # Iterate over all CSV files in the directory
-                logging.debug(f"Looking for files in directory: {os.path.join(data_dir, 'yyyymmdd_Exxx')}")
-                for filename in os.listdir(os.path.join(data_dir, 'yyyymmdd_Exxx')):
-                    if filename.endswith('_E.csv'):
-                        file_path = os.path.join(data_dir, 'yyyymmdd_Exxx', filename)
-                        logging.debug(f"Processing file: {file_path}")
-
-                        with open(file_path, 'r') as f:
-                            next(f)  # Skip the first line (header)
-                            for line in f:
-                                try:
-                                    values = line.split(',')
-
-                                    if len(values) < 6:  # Ensure there are enough columns
-                                        logging.warning(f"Skipping line with insufficient columns: {line.strip()}")
-                                        continue
-
-                                    bus_id = values[0]
-                                    signal = values[1]
-                                    timestamp = values[2]
-                                    delay_value = values[3]
-                                    latitude = values[4]
-                                    longitude = values[5]
-
-                                    # Filter by valid bus lines (3 and 8) based on bus_id
-                                    logging.debug(f"Bus ID {bus_id} found. Checking if it belongs to line 3 or 8.")
-                                    if bus_id not in valid_bus_lines:
-                                        logging.debug(f"Bus ID {bus_id} does not belong to line 3 or 8. Skipping.")
-                                        continue
-
-                                    # Store trajectory data (latitude and longitude)
-                                    if bus_id not in trajectories:
-                                        trajectories[bus_id] = {'latitudes': [], 'longitudes': [], 'timestamps': []}
-
-                                    trajectories[bus_id]['latitudes'].append(float(latitude))
-                                    trajectories[bus_id]['longitudes'].append(float(longitude))
-                                    trajectories[bus_id]['timestamps'].append(pd.to_datetime(timestamp))
-
-                                    # Store delay data
-                                    delay_seconds = parse_time_to_seconds(delay_value)
-                                    if delay_seconds is not None:
-                                        if bus_id not in delays:
-                                            delays[bus_id] = {'timestamps': [], 'delays': []}
-                                        
-                                        delays[bus_id]['timestamps'].append(pd.to_datetime(timestamp))
-                                        delays[bus_id]['delays'].append(delay_seconds)
-                                    else:
-                                        logging.debug(f"Could not parse delay value: {delay_value}")
-
-                                except Exception as e:
-                                    logging.error(f"Error processing line '{line.strip()}': {e}")
-                                    continue
-
-                if not trajectories or not delays:
-                    logging.error("No valid trajectory or delay data found.")
-                    return jsonify({"error": "No trajectory or delay data available"}), 404
-
-                logging.debug("Generating plots for trajectories and delays.")
-                # Generate the plots for trajectories and delays
-                fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 10))
-
-                # Plot trajectories (Latitude vs Longitude)
-                for bus_id in trajectories:
-                    latitudes = trajectories[bus_id]['latitudes']
-                    longitudes = trajectories[bus_id]['longitudes']
-                    logging.debug(f"Plotting trajectory for bus line {bus_id}.")
-                    ax1.plot(longitudes, latitudes, marker='o', label=f"Bus Line {bus_id}")
-                
-                ax1.set_title('Bus Trajectories for Lines 3 and 8')
-                ax1.set_xlabel('Longitude')
-                ax1.set_ylabel('Latitude')
-                ax1.legend()
-
-                # Plot delays over time
-                for bus_id in delays:
-                    timestamps = delays[bus_id]['timestamps']
-                    delay_values = delays[bus_id]['delays']
-                    logging.debug(f"Plotting delays for bus line {bus_id}.")
-                    ax2.plot(timestamps, delay_values, marker='o', label=f"Bus Line {bus_id}")
-                
-                ax2.set_title('Delays Over Time for Lines 3 and 8')
-                ax2.set_xlabel('Time')
-                ax2.set_ylabel('Delay (seconds)')
-                ax2.legend()
-
-                plt.tight_layout()
-
-                # Save the plot to a bytes buffer instead of displaying it
-                img = io.BytesIO()
-                plt.savefig(img, format='png')
-                img.seek(0)
-                logging.debug("Returning the generated plot as a response.")
-
-                # Return the image as a response directly, without JSON serialization
-                return send_file(img, mimetype='image/png')
-
-            except Exception as e:
-                logging.error(f"Unhandled exception in generating trajectories and delays plot: {e}")
-                return jsonify({"error": str(e)}), 500
-
-
-
     @uc1_ns.route('/bus_trajectories_map')
     class BusTrajectoriesMap(Resource):
         @auth.require_token
         def get(self, token_status="valid"):
             token_status = getattr(g, 'token_status', 'none')
-
+            
             if token_status != "valid":
                 return {"error": "Authentication Issue | Check User Credentials"}, 403
             
