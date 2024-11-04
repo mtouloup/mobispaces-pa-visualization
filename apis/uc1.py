@@ -455,14 +455,21 @@ def init_uc1():
                 return jsonify({"error": str(e)}), 500
 
 
-    @uc1_ns.route('/bus_stops_with_battery_consumption')
+    @uc1_ns.route('/bus_stops_with_battery_consumption/<string:bus_id>')
     class BusStopsWithBatteryConsumption(Resource):
         @auth.require_token
-        def get(self, token_status="valid"):
+        def get(self, bus_id, token_status="valid"):
             token_status = getattr(g, 'token_status', 'none')
             token_status = "valid"
             if token_status != "valid":
                 return {"error": "Authentication Issue | Check User Credentials"}, 403
+
+            # Define valid bus IDs
+            valid_bus_ids = [f'E80{i}' for i in range(1, 31)]
+
+            # Check if bus_id is within the valid range
+            if bus_id not in valid_bus_ids:
+                return {"error": f"Bus ID '{bus_id}' is not in the valid range (E801-E830)"}, 400
 
             try:
                 # Define file paths
@@ -478,8 +485,12 @@ def init_uc1():
                 bus_data = pd.read_csv(bus_file_path)
                 stops_data = pd.read_csv(stops_file_path)
 
-                # Filter for buses E801 - E830
-                bus_data = bus_data[bus_data['Veicolo'].astype(str).str.startswith('E80') & bus_data['Veicolo'].astype(str).isin([f'E80{i}' for i in range(1, 31)])]
+                # Filter for the specified bus only
+                bus_data = bus_data[bus_data['Veicolo'] == bus_id]
+
+                # Check if bus_id exists in the data
+                if bus_data.empty:
+                    return {"error": f"Bus ID '{bus_id}' not found in the data."}, 404
 
                 # Normalize battery values (keep only first two digits if greater than 100)
                 bus_data['Valore'] = bus_data['Valore'].apply(lambda x: int(str(int(x))[:2]) if x > 100 else x)
@@ -508,33 +519,26 @@ def init_uc1():
                 bus_data['closest_stop_id'] = bus_data['closest_stop_id'].astype(int)
                 bus_data = bus_data.merge(stops_data[['stop_id', 'stop_name', 'stop_lat', 'stop_lon']], left_on='closest_stop_id', right_index=True)
 
-                # Sort by DataOra to process stops in order
-                bus_data = bus_data.sort_values('DataOra')
-
                 # Initialize the map
                 map_genova = folium.Map(location=[44.414568, 8.926358], zoom_start=13)
 
-                # Group by bus to calculate the battery consumption between consecutive stops
-                for bus_id, group in bus_data.groupby('Veicolo'):
-                    group = group.drop_duplicates(subset=['closest_stop_id'], keep='first').reset_index(drop=True)
+                # Group by each stop and accumulate all battery levels and timestamps
+                stops_grouped = bus_data.groupby(['stop_id', 'stop_name', 'stop_lat', 'stop_lon'])
 
-                    # For each stop, calculate the battery consumption rate from the previous stop
-                    for i in range(1, len(group)):
-                        current_stop = group.iloc[i]
-                        previous_stop = group.iloc[i - 1]
+                for (stop_id, stop_name, stop_lat, stop_lon), group in stops_grouped:
+                    # Prepare a popup text showing all battery levels recorded at this stop
+                    popup_text = f"<strong>Stop: {stop_name}</strong><br><br>"
 
-                        # Calculate the battery consumption
-                        battery_consumption = abs(previous_stop['Valore'] - current_stop['Valore'])
+                    for _, row in group.iterrows():
+                        time = row['DataOra']  # Assuming 'DataOra' is the timestamp column
+                        battery_level = row['Valore']
+                        popup_text += f"Bus {bus_id} | Battery level: {battery_level}% | Time: {time}<br>"
 
-                        # We are only interested in positive battery consumption
-                        if battery_consumption >= 0 and battery_consumption <= 100:  # Valid consumption between 0 and 100%
-                            popup_text = f"Bus {bus_id} | Stop: {current_stop['stop_name']} | Battery consumption: {battery_consumption}% from previous stop"
-                        else:
-                            popup_text = f"Bus {bus_id} | Stop: {current_stop['stop_name']} | Battery consumption: Invalid data"
-
-                        # Add a marker for the current stop
-                        folium.Marker([current_stop['stop_lat'], current_stop['stop_lon']],
-                                    popup=popup_text).add_to(map_genova)
+                    # Add a marker for the stop with all recorded battery values
+                    folium.Marker(
+                        [stop_lat, stop_lon],
+                        popup=folium.Popup(popup_text, max_width=300)
+                    ).add_to(map_genova)
 
                 # Save the map to a file
                 output_html_path = os.path.join(os.getcwd(), 'bus_stops_with_battery_consumption.html')
@@ -546,6 +550,7 @@ def init_uc1():
             except Exception as e:
                 logging.error(f"Unhandled exception in generating bus stops with battery consumption: {e}")
                 return jsonify({"error": str(e)}), 500
+
 
 
 
