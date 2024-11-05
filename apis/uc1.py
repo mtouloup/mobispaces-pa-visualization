@@ -460,7 +460,7 @@ def init_uc1():
         @auth.require_token
         def get(self, bus_id, token_status="valid"):
             token_status = getattr(g, 'token_status', 'none')
-            token_status = "valid"
+
             if token_status != "valid":
                 return {"error": "Authentication Issue | Check User Credentials"}, 403
 
@@ -485,6 +485,9 @@ def init_uc1():
                 bus_data = pd.read_csv(bus_file_path)
                 stops_data = pd.read_csv(stops_file_path)
 
+                # Filter for rows where 'Segnale' is 'tractionBatterySocSOLEL'
+                bus_data = bus_data[bus_data['Segnale'] == 'tractionBatterySocSOLEL']
+
                 # Filter for the specified bus only
                 bus_data = bus_data[bus_data['Veicolo'] == bus_id]
 
@@ -493,7 +496,7 @@ def init_uc1():
                     return {"error": f"Bus ID '{bus_id}' not found in the data."}, 404
 
                 # Normalize battery values (keep only first two digits if greater than 100)
-                bus_data['Valore'] = bus_data['Valore'].apply(lambda x: int(str(int(x))[:2]) if x > 100 else x)
+                bus_data['Valore'] = bus_data['Valore']
 
                 # Prepare data for BallTree (convert lat/lon to radians)
                 bus_coords = np.radians(bus_data[['Latitudine', 'Longitudine']].values)
