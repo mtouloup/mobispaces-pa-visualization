@@ -284,3 +284,40 @@ def create_vessel_trajectory(dataset_url, shipid):
 
     html_string = m._repr_html_()
     return html_string
+
+
+def create_map_with_ais_rf(ais_dataset_url, rf_data, zoom_start):
+    """Creates a map with AIS data in yellow and RF data in red."""
+    df_ais = pd.read_csv(ais_dataset_url).dropna(subset=['lon', 'lat'])
+    df_rf = pd.DataFrame(rf_data)
+
+    # Create map centered on the AIS data
+    center_lat = df_ais['lat'].mean()
+    center_lon = df_ais['lon'].mean()
+    my_map = folium.Map(location=[center_lat, center_lon], zoom_start=zoom_start)
+
+    # Add AIS data markers (Yellow)
+    for _, row in df_ais.iterrows():
+        folium.CircleMarker(
+            [row['lat'], row['lon']],
+            radius=4,
+            color="yellow",
+            fill=True,
+            fill_color="yellow",
+            fill_opacity=0.7,
+            tooltip=f"AIS | Ship ID: {row['shipid']} | Time: {row['t']}"
+        ).add_to(my_map)
+
+    # Add RF data markers (Red)
+    for _, row in df_rf.iterrows():
+        folium.CircleMarker(
+            [row['lat'], row['lon']],
+            radius=4,
+            color="red",
+            fill=True,
+            fill_color="red",
+            fill_opacity=0.7,
+            tooltip=f"RF | Time: {row['t']}"
+        ).add_to(my_map)
+
+    return my_map._repr_html_()

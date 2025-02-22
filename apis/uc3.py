@@ -17,6 +17,9 @@ def init_uc3():
     decrypted_dataset_path = os.path.join(data_dir, 'ais.csv')
     mini_encrypted_dataset_path = os.path.join(data_dir, 'ais_mini_encrypted.csv')
 
+    ais_dataset_path_2025 = os.path.join(data_dir, 'ais_data_2025', 'ais_data.csv')  # New AIS data
+    rf_dataset_path_2025 = os.path.join(data_dir, 'ais_data_2025', 'doa_data.csv')   # RF data
+
     # Helper function for data export format
     def data_to_export_format(data, export_format):
         if export_format == "csv":
@@ -328,5 +331,35 @@ def init_uc3():
             if export_format not in ALLOWED_FORMATS_DATA:
                 return {"error": "Invalid format. Allowed values are: 'json', 'csv', 'xlsx'."}, 400        
             data = lt.get_aggregated_statistic_data(dataset_url=decrypted_dataset_path)
-            return data_to_export_format(data, export_format)               
+            return data_to_export_format(data, export_format)
+    
+    
+    
+    def load_rf_data():
+        """Loads RF dataset and extracts necessary columns."""
+        rf_data = pd.read_csv(rf_dataset_path_2025, usecols=['t', 'lon', 'lat'])
+        return rf_data.to_dict(orient='records')
+
+    @uc3_ns.route('/map/ais_rf')
+    class ais_rf_map(Resource):
+        @auth.require_token
+        def get(self, token_status="valid"):
+            token_status = getattr(g, 'token_status', 'none')
+
+            if token_status != "valid":
+                return {"error": "Authentication Issue | Check User Credentials"}, 403  
+            
+            html_map = lt.create_map_with_ais_rf(
+                ais_dataset_url=ais_dataset_path_2025,
+                rf_data=load_rf_data(),
+                zoom_start=12
+            )
+            
+            return Response(
+                html_map,
+                mimetype="text/html",
+                headers={"Content-disposition": "attachment; filename=ais_rf_map.html"}
+            ) 
+        
+                       
     return uc3_ns
