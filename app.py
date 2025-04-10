@@ -24,7 +24,7 @@ def serve_swagger_ui():
 def ship_prediction_map():
     # Point to the location of your dataset
     data_dir = os.path.abspath(os.path.join(os.getcwd(), '.', 'data'))
-    csv_path = os.path.join(data_dir, 'FLP_test_result.csv')
+    csv_path = os.path.join(data_dir, 'FLP_test_result.zip')
     map_path = generate_prediction_map(csv_path)
     return send_file(map_path, mimetype='text/html')
 
