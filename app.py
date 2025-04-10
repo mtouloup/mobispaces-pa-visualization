@@ -6,6 +6,9 @@ from apis.uc2_SKG import init_uc2_skg
 from apis.uc3 import init_uc3
 from apis.login import init_login
 from apis.uc1 import init_uc1
+from flask import send_file
+from static.ship_predictions import generate_prediction_map
+import os
 
 apidoc.apidoc.url_prefix = '/pava'
 app = Flask(__name__, static_folder='static', static_url_path='/pava/static')
@@ -15,6 +18,15 @@ CORS(app)
 @app.route('/pava')
 def serve_swagger_ui():
     return app.send_static_file('swaggerui/index.html')
+
+
+@app.route('/pava/ship_prediction_map', methods=['GET'])
+def ship_prediction_map():
+    # Point to the location of your dataset
+    data_dir = os.path.abspath(os.path.join(os.getcwd(), '.', 'data'))
+    csv_path = os.path.join(data_dir, 'FLP_test_result.csv')
+    map_path = generate_prediction_map(csv_path)
+    return send_file(map_path, mimetype='text/html')
 
 # Create the blueprint for your API without the prefix
 api_blueprint = Blueprint('api', __name__)
