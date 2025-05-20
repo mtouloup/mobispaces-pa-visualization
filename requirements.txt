@@ -1,6 +1,7 @@
 Werkzeug==0.16.1
 markupsafe==2.0.1
 flask
+openpyxl
 folium
 pandas
 flask_cors
@@ -10,6 +11,5 @@ haversine
 PyJWT
 jwcrypto
 xlsxwriter
-sklearn
-random
+scikit-learn
 seaborn
