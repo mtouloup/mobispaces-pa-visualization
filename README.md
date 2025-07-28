@@ -81,7 +81,7 @@ After running these commands, the PAVA Backend will be up and running on `http:/
 
 ## Acknowledgments
 
-The research leading to the results presented in this project has received funding from the European Union’s funded Project MobiSpaces under grant agreement no 101070279.
+This software has been developed thanks to the MobiSpaces project (Grant agreement ID: 101070279)
 
 ## Contact
 
